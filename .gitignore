@@ -1,0 +1,15 @@
+/target/
+.classpath
+.idea
+.project
+.settings     
+ ##filter databfile、sln file##
+ *.mdb  
+ *.ldb  
+ *.sln
+ *.iml
+ *.com  
+ *.class  
+ *.dll  
+ *.exe  
+ *.jar
