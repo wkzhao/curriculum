@@ -12,7 +12,7 @@ public interface UserPaperDao
 
   @Select(""
           +" select paper_id ,paper.name "
-          +" from "+TABLE
+          +" from "+TABLE+",paper"
           +" where user_id = #{userId} "
           +" and paper_id = paper.id "
   )

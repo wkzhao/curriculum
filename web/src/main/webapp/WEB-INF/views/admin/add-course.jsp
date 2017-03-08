@@ -166,7 +166,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 													<div class="form-line question-type" >
 														<span class="form-label">上传视频：</span>
-														<input  id="course-upload-file" type="file" name="uploadFile"><label class="btn btn-default" onclick="uploadFile()">点击上传</label>
+														<input  id="course-upload-file" type="file" name="upload"><label class="btn btn-default" onclick="uploadFile()">点击上传</label>
 														<span id = "upload_file_span" class="form-message"></span>
 														<br>
 														<input type="hidden" value="" id="course_video_url">
@@ -220,7 +220,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<script type="text/javascript" src="resources/js/all.js"></script>
 		<script type="text/javascript" src="resources/ckeditor/ckeditor.js"></script>
 	    <script type="text/javascript">
-            var CKContent = CKEDITOR.replace("content");
+            var CKContent = CKEDITOR.replace("content",{
+                filebrowserImageUploadUrl : "admin/course-upload-image",
+			});
 
 			function addCourse()  {
 				var course = new Object();
@@ -257,7 +259,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				    return false;
 				}
 				$.ajaxFileUpload({
-				    url  : "admin/course-file-upload",
+				    url  : "admin/course-upload-video",
                     secureuri: false, //是否需要安全协议，一般设置为false
                     fileElementId: 'course-upload-file', //文件上传域的ID
                     dataType: 'json', //返回值类型 一般设置为json

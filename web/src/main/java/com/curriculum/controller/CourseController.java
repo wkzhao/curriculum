@@ -10,18 +10,17 @@ import com.curriculum.util.ReturnJacksonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.List;
 import java.util.Locale;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -69,9 +68,9 @@ public class CourseController
         view.addObject("course", course);
         return view;
     }
-    @RequestMapping(value={"admin/course-file-upload"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    @RequestMapping(value={"admin/course-upload-video"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
     @ResponseBody
-    public String fileUpload(@RequestParam("uploadFile") MultipartFile file, HttpServletRequest request) throws IOException {
+    public String videoUpload(@RequestParam("upload") MultipartFile file, HttpServletRequest request ) throws IOException {
         String path = request.getSession().getServletContext().getRealPath("/") + "resources" + File.separator + "upload" + File.separator + "course";
         String fileName = file.getOriginalFilename();
         File targetFile = new File(path, fileName);
@@ -80,5 +79,26 @@ public class CourseController
         }
         file.transferTo(targetFile);
         return ReturnJacksonUtil.resultOk(path + File.separator + fileName, Locale.CHINA);
+    }
+
+    @RequestMapping(value = "admin/course-upload-image",method = RequestMethod.POST)
+    @ResponseBody
+    public String imageUpload(@RequestParam("upload") MultipartFile file,HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String fileName = file.getOriginalFilename();
+        response.reset();
+        PrintWriter out = response.getWriter();
+        String path = request.getSession().getServletContext().getRealPath("/") + "resources" + File.separator + "upload" + File.separator + "course";
+        File targetFile = new File(path, fileName);
+        if (!targetFile.exists()) {
+            targetFile.mkdirs();
+        }
+        file.transferTo(targetFile);
+        String callback = request.getParameter("CKEditorFuncNum");
+        out.println("<script type=\"text/javascript\">");
+        out.println("window.parent.CKEDITOR.tools.callFunction("+ callback + ",'" +"resources/upload/course/"+ fileName + "','')");
+        out.println("</script>");
+        out.flush();
+        out.close();
+        return "上传成功";
     }
 }

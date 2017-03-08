@@ -170,14 +170,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<li><a disabled="disabled" href="javascript:void(0)">${status.index+pageBean.beginPageIndex-1 }</a></li>
 										</c:if>
 										<c:if test="${status.index+pageBean.beginPageIndex-1 != pageBean.currentPage }">
-											<li><a data-id = "${status.index+pageBean.beginPageIndex-1 }" >${status.index+pageBean.beginPageIndex-1 }</a></li>
+											<li><a href="admin/course-list/${status.index+pageBean.beginPageIndex-1 }" >${status.index+pageBean.beginPageIndex-1 }</a></li>
 										</c:if>
 									</c:forEach>
 									</ul>
 								</div>
 							</div>
-							
-							
 							<div id="course-list">
 								<table class="table-striped table">
 									<thead>
@@ -223,7 +221,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<li><a disabled="disabled" href="javascript:void(0)">${status.index+pageBean.beginPageIndex-1 }</a></li>
 									</c:if>
 									<c:if test="${status.index+pageBean.beginPageIndex-1 != pageBean.currentPage }">
-										<li><a data-id = "${status.index+pageBean.beginPageIndex-1 }" >${status.index+pageBean.beginPageIndex-1 }</a></li>
+										<li><a href="admin/course-list/${status.index+pageBean.beginPageIndex-1 }" >${status.index+pageBean.beginPageIndex-1 }</a></li>
 									</c:if>
 								</c:forEach>
 								</ul>
@@ -259,7 +257,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<!-- Bootstrap JS -->
 		<script type="text/javascript" src="resources/bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="resources/js/all.js"></script>
-		<script type="text/javascript" src="resources/js/point-list.js"></script>
 		
 	</body>
 </html>

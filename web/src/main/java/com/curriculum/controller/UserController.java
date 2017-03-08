@@ -33,13 +33,18 @@ public class UserController
     }
     @ResponseBody
     @RequestMapping(value={"user-register"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
-    public String register(@ModelAttribute User newUser, HttpSession session) throws JsonProcessingException { User user = this.userService.findUserByUsername(newUser.getUsername());
+    public String register(@RequestBody User newUser, HttpSession session) throws JsonProcessingException {
+        User user = userService.findUserByUsername(newUser.getUsername());
         if (user != null) {
             return ReturnJacksonUtil.resultWithFailed(WebCodeEnum.USER_ALREADY_EXISTS);
         }
+        newUser.setLoginTime(new Date());
         this.userService.addUser(newUser);
-        session.setAttribute("user", newUser);
-        return ReturnJacksonUtil.resultOk(); }
+        if( session.getAttribute("user") == null ){
+            session.setAttribute("user", newUser);
+        }
+        return ReturnJacksonUtil.resultOk();
+    }
 
     @RequestMapping(value={"admin/user-list/{currentPage}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public ModelAndView getUsersByPage(@PathVariable("currentPage") int currentPage) {
@@ -51,6 +56,7 @@ public class UserController
         view.addObject("pageBean", pageBean);
         return view;
     }
+
     @ResponseBody
     @RequestMapping(value={"admin/changeUserStatus"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
     public String changeUserStatus(@RequestBody Map<String, String> map) throws JsonProcessingException { int userId = Integer.parseInt((String)map.get("userId"));

@@ -130,7 +130,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<td></td><td>ID</td><td>用户名</td><td>邮箱</td>
 											<!-- <td>用户组</td> -->
 											
-											<td>注册时间</td><td>状态</td><td>操作</td>
+											<td>注册时间</td><td>操作</td>
 										</tr>
 									</thead>
 									<tbody>
@@ -147,27 +147,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 													<fmt:formatDate value="${item.createTime }" pattern="yyyy-MM-dd"/>
 												</td>
 												<td>
-													<c:choose>
-														<c:when test="${item.status == 1 }">
-															<span class="label label-success">启用</span>
-														</c:when>
-														<c:when test="${item.status == 0 }">
-															<span class="label label-danger">注销</span>
-														</c:when>
-														<c:otherwise>
-															其他
-														</c:otherwise>
-													</c:choose>
-												</td>
-												<td>
-													<c:choose>
-														<c:when test="${item.status == 1 }">
-															<span class="disable-btn" data-id="${item.id}">禁用</span>
-														</c:when>
-														<c:when test="${item.status == 0 }">
-															<span class="enable-btn" data-id="${item.id}">启用</span>
-														</c:when>
-													</c:choose>
+													<span class="enable-btn" data-id="${item.id}">做题统计</span>
 												</td>
 											</tr>
 										</c:forEach>
@@ -219,8 +199,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		
 		<!-- Bootstrap JS -->
 		<script type="text/javascript" src="resources/bootstrap/js/bootstrap.min.js"></script>
-		<script>
-			$(function(){
+		<script type="text/javascript">
 				$(".disable-btn").click(function(){
 					var message = "确定要禁用该用户吗？";
 					var answer = confirm(message);
@@ -254,38 +233,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				});
 				
 				$(".enable-btn").click(function(){
-					var message = "确定要启用该用户吗？";
-					var answer = confirm(message);
-					if(!answer){
-						return false;
-					}
-					var param = new Object();
-					param.userId = $(this).data("id");
-					param.status = 1;
-					jQuery.ajax({
-						headers : {
-							'Accept' : 'application/json',
-							'Content-Type' : 'application/json'
-						},
-						type : "POST",
-						url : 'admin/changeUserStatus',
-						data:JSON.stringify(param),
-                        success:function(msg) {
-                            if(msg.status.code == 0){
-                                alert("操作成功");
-                                window.location.reload();
-                            }else{
-                                alert("操作失败");
-                            }
-                        },
-						error : function(jqXHR, textStatus) {
-							alert("操作失败请稍后尝试");
-						}
-					});
-					
-				});
+                    var w = 800;
+                    var h = 600;
+                    var left = (screen.width/2)-(w/2);
+                    var top = (screen.height/2)-(h/2);
+                    window.open("student/setting", "页面标题", 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
 			});
-		
 		</script>
 	</body>
 </html>

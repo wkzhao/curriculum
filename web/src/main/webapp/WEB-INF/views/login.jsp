@@ -192,7 +192,7 @@ String basePath = request.getScheme() + "://"
                                 if(msg.status.code == 0){
                                     window.location.href = document.getElementsByTagName('base')[0].href +"home";
                                 }else{
-                                    util.error(msg);
+                                    util.error(msg.status.msg);
                                     return ;
                                 }
                             },

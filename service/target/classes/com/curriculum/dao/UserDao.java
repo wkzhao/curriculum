@@ -15,7 +15,7 @@ public interface UserDao
 
   @Insert(""
           +" insert into "
-          +TABLE+" ( username,roleId,password,email,tel,lastLoginTime,loginTime ) "
+          +TABLE+" ( username,role_id,password,email,tel,last_login_time,login_time ) "
           +" values ( #{user.username},#{user.roleId},#{user.password},#{user.email},#{user.tel},#{user.lastLoginTime},#{user.loginTime})"
   )
   @Options(useGeneratedKeys=true, keyProperty="user.id")
@@ -30,7 +30,8 @@ public interface UserDao
   @Select(""
           +" select  id,username,role_id,password,email,tel,last_login_time,login_time "
           +" from "+TABLE
-          +" where id = #{id} ")
+          +" where id = #{id} "
+  )
    User findUserById(@Param("id") int id);
 
   @Update(""
@@ -49,6 +50,8 @@ public interface UserDao
   @Select(""
           +" select  id,username,status,role_id,email,create_time,last_login_time,login_time,tel "
           +" from "+TABLE
-          +" limit #{pageBean.recordIndex},#{pageBean.pageSize} ")
+          +" where role_id != 0 "
+          +" limit #{pageBean.recordIndex},#{pageBean.pageSize} "
+  )
    List<User> getUsersByPage(@Param("pageBean") PageBean pageBean);
 }

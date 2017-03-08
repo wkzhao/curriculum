@@ -202,6 +202,7 @@ String basePath = request.getScheme() + "://"
 		<!-- Bootstrap JS -->
 		<script type="text/javascript" src="resources/bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="resources/js/md5.js"></script>
+		<script type="text/javascript" src="resources/js/all.js"></script>
 		<script type="text/javascript" src="resources/js/register.js"></script>
 
 	</body>

@@ -14,18 +14,26 @@ var create_account = {
 		form
 				.submit(function() {
 					var result = create_account.verifyInput();
+					var user = new Object();
+					user.username = $("#name").val();
+					user.password = hex_md5($("#password").val());
+					user.email = $("#email").val();
+					user.roleId = $("#register-roleId").val();
 					if (result) {
 						jQuery
 								.ajax({
+                                    headers : {
+                                        'Accept' : 'application/json',
+                                        'Content-Type' : 'application/json'
+                                    },
 									type : "POST",
 									url : form.attr("action"),
-									data : "username="+$("#name").val()+"&email="+$("#email").val()+"&roleId="+$("#register-roleId").val()+"&password="+hex_md5($("#password").val()),
+									data : JSON.stringify(user),
 									success : function(msg) {
-										var result = eval('(' + msg + ')');
-										if(result.status.code == 0){
+										if(msg.status.code == 0){
 											window.location.href = "home";
 										}else{
-											alert(msg);
+											util.error(msg.status.msg);
                                         }
 									}
 								});
