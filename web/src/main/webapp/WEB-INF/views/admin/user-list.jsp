@@ -80,10 +80,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</li>
 
 						<li>
-							<a href="admin/exampaper-list"><i class="fa fa-file-text-o"></i>试卷管理</a>
+							<a href="admin/exampaper-list-0-1"><i class="fa fa-file-text-o"></i>试卷管理</a>
 						</li>
 						<li class="active">
-							<a href="admin/user-list/1"><i class="fa fa-user"></i>会员管理</a>
+							<a href="admin/user-list/1"><i class="fa fa-user"></i>学生管理</a>
 						</li>
 						<li>
 							<a href="admin/knowledge-list"><i class="fa fa-cloud"></i>题库管理</a>
@@ -109,16 +109,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="col-xs-3">
 						<ul class="nav default-sidenav">
 							<li class="active">
-								<a> <i class="fa fa-list-ul"></i> 会员管理 </a>
+								<a> <i class="fa fa-list-ul"></i> 学生管理 </a>
 							</li>
 							<li>
-								<a href="admin/add-user"> <i class="fa fa-list-ul"></i> 添加会员 </a>
+								<a href="admin/add-user"> <i class="fa fa-list-ul"></i> 添加管理员 </a>
 							</li>
 						</ul>
 					</div>
 					<div class="col-xs-9">
 						<div class="page-header">
-							<h1><i class="fa fa-list-ul"></i> 会员管理 </h1>
+							<h1><i class="fa fa-list-ul"></i> 学生管理 </h1>
 						</div>
 						<div class="page-content row">
 
@@ -127,18 +127,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<table class="table-striped table">
 									<thead>
 										<tr>
-											<td></td><td>ID</td><td>用户名</td><td>邮箱</td>
-											<!-- <td>用户组</td> -->
-											
+											<td>ID</td><td>用户名</td><td>邮箱</td>
 											<td>注册时间</td><td>操作</td>
 										</tr>
 									</thead>
 									<tbody>
 										<c:forEach items="${userList }" var="item">
 											<tr>
-												<td>
-													<input type="checkbox" value="${item.id }">
-												</td>
 												<td>${item.id }</td>
 												<td>${item.username }</td>
 												<td>${item.email }</td>
@@ -148,6 +143,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 												</td>
 												<td>
 													<span class="enable-btn" data-id="${item.id}">做题统计</span>
+													<span class="disable-btn" data-id="${item.id}">考试历史</span>
 												</td>
 											</tr>
 										</c:forEach>
@@ -201,43 +197,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<script type="text/javascript" src="resources/bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript">
 				$(".disable-btn").click(function(){
-					var message = "确定要禁用该用户吗？";
-					var answer = confirm(message);
-					if(!answer){
-						return false;
-					}
-					var param = new Object();
-					param.userId = $(this).data("id");
-					param.status = 0;
-					jQuery.ajax({
-						headers : {
-							'Accept' : 'application/json',
-							'Content-Type' : 'application/json'
-						},
-						type : "POST",
-						url : 'admin/changeUserStatus',
-						data:JSON.stringify(param),
-                        success:function(msg) {
-                            if(msg.status.code == 0){
-                                alert("操作成功");
-                                window.location.reload();
-                            }else{
-                                alert("操作失败");
-                            }
-                        },
-                        error : function(jqXHR, textStatus) {
-                            alert("操作失败请稍后尝试");
-                        }
-                    });
-					
-				});
-				
-				$(".enable-btn").click(function(){
+                    var userId = $(".enable-btn").data("id");
                     var w = 800;
                     var h = 600;
                     var left = (screen.width/2)-(w/2);
                     var top = (screen.height/2)-(h/2);
-                    window.open("student/setting", "页面标题", 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
+                    window.open("student/exam-history/"+userId+"?isAdmin=true", "学生考试历史",
+                        'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no,' +
+                        ' resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
+					
+				});
+				
+				$(".enable-btn").click(function(){
+				    var userId = $(".enable-btn").data("id");
+                    var w = 800;
+                    var h = 600;
+                    var left = (screen.width/2)-(w/2);
+                    var top = (screen.height/2)-(h/2);
+                    window.open("student/analysis/"+userId+"?isAdmin=true", "学生做题统计",
+						'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no,' +
+						' resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
 			});
 		</script>
 	</body>

@@ -73,10 +73,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</li>
 
 						<li>
-							<a href="admin/exampaper-list"><i class="fa fa-file-text-o"></i>试卷管理</a>
+							<a href="admin/exampaper-list-0-1"><i class="fa fa-file-text-o"></i>试卷管理</a>
 						</li>
 						<li>
-							<a href="admin/user-list/1"><i class="fa fa-user"></i>会员管理</a>
+							<a href="admin/user-list/1"><i class="fa fa-user"></i>学生管理</a>
 						</li>
 						<li class="active">
 							<a><i class="fa fa-cloud"></i>题库管理</a>
@@ -139,7 +139,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<table class="table-striped table">
 									<thead>
 										<tr>
-											<td></td>
 											<td>ID</td>
 											<td>题库名</td>
 											<td>描述</td>
@@ -149,14 +148,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<tbody>
 										<c:forEach items="${knowledgeList }" var="item">
 											<tr>
+												<td><span class = "td-knowledge-id">${item.id }</span></td>
+												<td><span class = "td-knowledge-name">${item.name }</span></td>
+												<td><span class = "td-knowledge-description">${item.description }</span></td>
 												<td>
-													<input type="checkbox" value="${item.id }">
-												</td>
-												<td>${item.id }</td>
-												<td>${item.name }</td>
-												<td>${item.description }</td>
-												<td>
-													<button class="delete-btn" data-id="${item.id }">删除</button>
+													<a class="change-property">修改属性</a>
 												</td>
 											</tr>
 										</c:forEach>
@@ -164,12 +160,39 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</tbody><tfoot></tfoot>
 								</table>
 							</div>
-							<div id="page-link-content">
-								<ul class="pagination pagination-sm">${pageStr}</ul>
-							</div>
-
 						</div>
 					</div>
+
+					<div class="modal fade" id="change-knowledge-property-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h6 class="modal-title" id="myModalLabel">修改知识库属性</h6>
+								</div>
+								<div class="modal-body">
+									<form >
+										<span id="add-update-knowledgeId" style="display:none;"></span>
+										<div class="form-line add-update-knowledgeName">
+											<span class="form-label"><span class="warning-label">*</span>知识库名称：</span>
+											<input type="text" class="df-input-narrow">
+											<span class="form-message"></span>
+										</div>
+										<div class="form-line add-update-knowledgeDescription">
+											<span class="form-label">知识库描述：</span>
+											<input type="text" class="df-input-narrow">
+											<span class="form-message"></span>
+										</div>
+									</form>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">关闭窗口</button>
+									<button id="update-knowledge-btn" type="button" class="btn btn-primary">确定修改</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
 				</div>
 			</div>
 		</div>

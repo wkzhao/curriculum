@@ -27,4 +27,9 @@ public class KnowledgeServiceImpl
         int num = this.knowledgeDao.addKnowledge(knowledge);
         return num;
     }
+
+    @Override
+    public int changeProperty(Knowledge knowledge) {
+        return knowledgeDao.changeProperty(knowledge);
+    }
 }

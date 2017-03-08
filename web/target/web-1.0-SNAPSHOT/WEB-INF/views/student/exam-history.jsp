@@ -29,6 +29,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<link href="resources/chart/morris.css" rel="stylesheet">
 	</head>
 	<body>
+	<c:if test="${ !isAdmin }">
 		<header>
 			<div class="container">
 				<div class="row">
@@ -78,7 +79,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</nav>
 			</div>
 		</div>
-
+	</c:if>
 		<!-- Navigation bar ends -->
 
 		<!-- Slider starts -->
@@ -87,21 +88,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<!-- Slider (Flex Slider) -->
 
 			<div class="container" style="min-height:500px;">
-
 				<div class="row">
+					<c:if test="${ !isAdmin }">
 					<div class="col-xs-3">
 						<ul class="nav default-sidenav">
 							<li>
 								<a href="student/user-center"> <i class="fa fa-dashboard"></i> 用户中心 </a>
 							</li>
 							<li>
-								<a href="student/analysis"> <i class="fa fa-bar-chart-o"></i> 统计分析 </a>
+								<a href="student/analysis/${sessionScope.user.id}"> <i class="fa fa-bar-chart-o"></i> 统计分析 </a>
 							</li>
 							<li class="active">
 								<a> <i class="fa fa-history"></i> 练习历史 </a>
 							</li>
 						</ul>
 					</div>
+					</c:if>
 					<div class="col-xs-9">
 						<div class="page-header">
 							<h1><i class="fa fa-history"></i> 练习历史</h1>
@@ -111,34 +113,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<table class="table-striped table">
 									<thead>
 										<tr>
-											<td>试卷名称</td><td>参加时间</td><td>得分</td><td>操作</td>
+											<td>试卷名称</td><td>参加时间</td><td>操作</td>
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach items="${hisList }" var="item">
+										<c:forEach items="${exampaperList}" var="item">
 											<tr>
 											
 												<td>
-													<c:if test="${item.examPaperId == -1 }">
-														<a href="student/exam-report" target="_blank" title="预览">${item.paperName }</a></td>
-													</c:if>
-													<c:if test="${item.examPaperId != -1 }">
-														<a href="student/exam-report/${item.examPaperId }" target="_blank" title="预览">${item.paperName }</a></td>
-													</c:if>
+													${item.name}
 												<td>
 													<fmt:formatDate value="${item.createTime }" pattern="yyyy-MM-dd"/>
 												</td>
 												<td>
-													${item.pointGet }
-												</td>
-												<td>
-													
-													<c:if test="${item.examPaperId == -1 }">
-														<a href="student/finish-exam" target="_blank" title="预览">查看报告</a></td>
-													</c:if>
-													<c:if test="${item.examPaperId != -1 }">
-														<a href="student/finish-exam/${item.examPaperId }" target="_blank" title="预览">查看报告</a></td>
-													</c:if>
+													<a href="student/exam-report/${item.id }" target="_blank" title="预览">查看报告</a></td>
 												</td>
 											</tr>
 										</c:forEach>
@@ -156,7 +144,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 			</div>
 		</div>
-
+	    <c:if test="${ !isAdmin }">
 		<footer>
 			<div class="container">
 				<div class="row">
@@ -172,7 +160,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 
 		</footer>
-
+		</c:if>
 		<!-- Slider Ends -->
 
 		<!-- Javascript files -->

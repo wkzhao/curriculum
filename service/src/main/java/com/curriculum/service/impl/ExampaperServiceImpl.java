@@ -2,6 +2,7 @@ package com.curriculum.service.impl;
 
 import com.curriculum.dao.PaperDao;
 import com.curriculum.domain.Exampaper;
+import com.curriculum.domain.PageBean;
 import com.curriculum.service.ExampaperService;
 import java.util.Collections;
 import java.util.List;
@@ -16,10 +17,15 @@ public class ExampaperServiceImpl
     @Autowired
     PaperDao paperDao;
 
-    public List<Exampaper> getAllPapers()
+    public List<Exampaper>  getExamPaperByPage(int status, PageBean pageBean)
     {
-        List exampaperList = this.paperDao.getAllPapers();
+        List exampaperList = this.paperDao.getExamPaperByPage(status,pageBean);
         return exampaperList == null ? Collections.emptyList() : exampaperList;
+    }
+
+    @Override
+    public int getPaperCount(int status) {
+        return paperDao.getPaperCount(status);
     }
 
     public List<Exampaper> getSimplePapers()
@@ -59,5 +65,10 @@ public class ExampaperServiceImpl
     public int changePaperQuestionIds(String questionIds, int id)
     {
         return this.paperDao.changePaperQuestionIds(questionIds, id);
+    }
+
+    @Override
+    public int changePaperProperty(Exampaper exampaper) {
+        return paperDao.changePaperProperty(exampaper);
     }
 }

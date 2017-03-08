@@ -190,17 +190,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										</form>
 									</c:forEach>
 								</ul>
-								<div id="exampaper-footer">
-									<div id="question-navi">
-										<div id="question-navi-controller">
-											<i class="fa fa-arrow-circle-down"></i>
-											<span>答题卡</span>
-										</div>
-										<div id="question-navi-content">
-										</div>
-									</div>
-
-								</div>
 							</div>
 
 						</div>

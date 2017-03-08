@@ -12,9 +12,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -34,39 +32,45 @@ public class UserCenterController
     @Autowired
     UserServiceImpl userService;
 
-    @RequestMapping(value={"student/user-center"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value={"student/user-center"}, method = RequestMethod.GET)
     public ModelAndView toUserCenter()
     {
         return new ModelAndView("student/user-center");
     }
-    @RequestMapping(value={"student/analysis"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
-    public ModelAndView analysis(HttpSession session) {
+    @RequestMapping(value={"student/analysis/{userId}"}, method = RequestMethod.GET)
+    public ModelAndView analysis(@PathVariable("userId") int userId, @RequestParam(value = "isAdmin",required = false) boolean isAdmin) {
         ModelAndView view = new ModelAndView("student/analysis");
-        User user = (User)session.getAttribute("user");
-        List knowledgePointList = this.knowledgePointService.getAllPoints();
-        List analysisList = this.userQuestionService.getAnalysisByPoints(user.getId(), knowledgePointList);
+        List knowledgePointList = knowledgePointService.getPointsByPage(0,null);
+        List analysisList = userQuestionService.getAnalysisByPoints(userId, knowledgePointList);
         view.addObject("analysisList", analysisList);
+        if(isAdmin){
+            view.addObject("isAdmin",true);
+        }else{
+            view.addObject("isAdmin",false);
+        }
         return view;
     }
-    @RequestMapping(value={"student/exam-history"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
-    public ModelAndView examHistory(HttpSession session) {
+    @RequestMapping(value={"student/exam-history/{userId}"}, method = RequestMethod.GET)
+    public ModelAndView examHistory(@PathVariable("userId") int userId,@RequestParam(value = "isAdmin",required = false) boolean isAdmin) {
         ModelAndView view = new ModelAndView("student/exam-history");
-        User user = (User)session.getAttribute("user");
-        List userPaperList = this.userPaperService.getUserPaperByUserId(user.getId());
+        List userPaperList = userPaperService.getUserPaperByUserId(userId);
         view.addObject("userPaperList", userPaperList);
+        if(isAdmin){
+            view.addObject("isAdmin",true);
+        }
         return view;
     }
-    @RequestMapping(value={"student/setting"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value={"student/setting"}, method = RequestMethod.GET)
     public ModelAndView setting() { return new ModelAndView("student/setting"); }
 
-    @RequestMapping(value={"student/change-password"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value={"student/change-password"}, method = RequestMethod.GET)
     public ModelAndView changePwd() {
         return new ModelAndView("student/change-password");
     }
-    @RequestMapping(value={"student/changeUserInfo"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    @RequestMapping(value={"student/changeUserInfo"}, method = RequestMethod.POST)
     @ResponseBody
     public String changeUserInfo(@RequestBody User u, HttpSession session) throws JsonProcessingException { User currentUser = (User)session.getAttribute("user");
-        User user = this.userService.findUserByUsername(currentUser.getUsername());
+        User user = userService.findUserByUsername(currentUser.getUsername());
         if (u.getEmail() != null) {
             currentUser.setEmail(u.getEmail());
         }
@@ -76,7 +80,7 @@ public class UserCenterController
         if (u.getPassword() != null) {
             currentUser.setPassword(u.getPassword());
         }
-        this.userService.changeUserInfo(user);
+        userService.changeUserInfo(user);
         session.setAttribute("user", currentUser);
         return ReturnJacksonUtil.resultOk();
     }

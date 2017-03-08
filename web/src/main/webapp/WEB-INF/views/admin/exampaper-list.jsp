@@ -76,10 +76,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</li>
 
 						<li class="active">
-							<a href="admin/exampaper-list"><i class="fa fa-file-text-o"></i>试卷管理</a>
+							<a href="admin/exampaper-list-0-1"><i class="fa fa-file-text-o"></i>试卷管理</a>
 						</li>
 						<li>
-							<a href="admin/user-list/1"><i class="fa fa-user"></i>会员管理</a>
+							<a href="admin/user-list/1"><i class="fa fa-user"></i>学生管理</a>
 						</li>
 						<li>
 							<a href="admin/knowledge-list"><i class="fa fa-cloud"></i>题库管理</a>
@@ -105,7 +105,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="col-xs-3">
 						<ul class="nav default-sidenav">
 							<li class="active">
-								<a href="admin/exampaper-list"> <i class="fa fa-list-ul"></i> 试卷管理 </a>
+								<a href="admin/exampaper-list-0-1"> <i class="fa fa-list-ul"></i> 试卷管理 </a>
 							</li>
 							<li>
 								<a href="admin/exampaper-add"> <i class="fa fa-file-text-o"></i> 创建新试卷 </a>
@@ -125,85 +125,65 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										分类：
 									</dt>
 									<dd>
-										<span data-id="0" <c:if test="${papertype == '0' }">
+										<span data-id="0" <c:if test="${status == '0' }">
 												 class="label label-info"
 											</c:if>>全部</span>
 										<span data-id="1" 
-											<c:if test="${papertype == '1' }">
+											<c:if test="${status == '1' }">
 												 class="label label-info"
 											</c:if>
-										>随机组卷</span>
-										<span data-id="2" <c:if test="${papertype == '2' }">
+										>未上线</span>
+										<span data-id="2" <c:if test="${status == '2' }">
 												 class="label label-info"
-											</c:if>>模拟考试</span>
-										<span data-id="3" <c:if test="${papertype == '3' }">
-												 class="label label-info"
-											</c:if>>专家试卷</span>
+											</c:if>>已上线</span>
 									</dd>
 								</dl>
 								
 
 								<div class="page-link-content">
-									<ul class="pagination pagination-sm">${pageStr}</ul>
+									<ul class="pagination pagination-sm">
+										<c:forEach  varStatus="status" begin="${pageBean.beginPageIndex }"  end="${pageBean.endPageIndex}">
+											<c:if test="${status.index+pageBean.beginPageIndex-1 == pageBean.currentPage }">
+												<li><a disabled="disabled" href="javascript:void(0)">${status.index+pageBean.beginPageIndex-1 }</a></li>
+											</c:if>
+											<c:if test="${status.index+pageBean.beginPageIndex-1 != pageBean.currentPage }">
+												<li><a href = "admin/exampaper-list-${status}-${status.index+pageBean.beginPageIndex-1 }" >${status.index+pageBean.beginPageIndex-1 }</a></li>
+											</c:if>
+										</c:forEach>
+									</ul>
 								</div>
 							</div>
 							<div id="question-list">
 								<table class="table-striped table">
 									<thead>
 										<tr>
-											<td></td><td>ID</td><td>试卷名称</td><td>时长</td><td>类别</td><td>创建人</td><td>状态</td><td>操作</td>
+											<td>ID</td><td>试卷名称</td><td>时长</td><td>创建人</td><td>状态</td><td>操作</td>
 										</tr>
 									</thead>
 									<tbody>
 										<c:forEach items="${exampaperList}" var="item">
 											<tr>
-												<td>
-													<input type="checkbox" value="${item.id }">
-												</td>
-												<td>${item.id }</td>
+												<td><span class="td-paper-id">${item.id }</span></td>
 												<td><a href="admin/exampaper-preview/${item.id }" target="_blank" title="预览" class="td-paper-name">${item.name }</a></td>
 												<td><span class="td-paper-duration">${item.time}</span>分钟</td>
-												<td>
-													<c:if test="${item.paperTypeId == '1' }">
-														<span class="td-paper-type" data-id="${item.paperTypeId}">
-															随机组卷
-														</span>
-													</c:if>
-													<c:if test="${item.paperTypeId == '2' }">
-														<span class="td-paper-type" data-id="${item.paperTypeId}">
-														模拟考试
-														</span>
-													</c:if>
-													<c:if test="${item.paperTypeId == '3' }">
-														<span class="td-paper-type" data-id="${item.paperTypeId}">
-														专家试卷
-														</span>
-													</c:if>
-												</td>
 												<td>${item.creator }</td>
 												<td>
 													<c:choose>
-														<c:when test="${item.status == 0 }">
+														<c:when test="${item.status == 1 }">
 															未上线
 														</c:when>
-														<c:when test="${item.status == 1 }">
-															已上线
-														</c:when>
 														<c:when test="${item.status == 2 }">
-															已下线
+															已上线
 														</c:when>
 													</c:choose>
 												</td>
 												<td>
 													<c:choose>
-														<c:when test="${item.status == 0 }">
+														<c:when test="${item.status == 1 }">
 															<a href="admin/exampaper-edit/${item.id}">修改内容</a>
 															<a class="change-property">修改属性</a>
 															<a class="publish-paper">上线</a>
 															<a class="delete-paper">删除</a>
-														</c:when>
-														<c:when test="${item.status == 1 }">
-															<a class="offline-paper">下线</a>
 														</c:when>
 													</c:choose>
 												
@@ -233,15 +213,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 																		<input type="text" class="df-input-narrow">
 																		<span class="form-message"></span>
 																	</div>
-														     		<div class="form-line exampaper-type" id="exampaper-type">
-																		<span class="form-label"><span class="warning-label">*</span>分类：</span>
-																		<select id="exampaper-type-select" class="df-input-narrow">
-																			
-																			<option value="1">随机组卷</option>
-																			<option value="2">模拟考试</option>
-																			<option value="3">专家试卷</option>
-																		</select><span class="form-message"></span>
-																	</div>
 																</form>
 														     </div>
 														     <div class="modal-footer">
@@ -253,7 +224,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 							</div>
 							<div class="page-link-content">
-									<ul class="pagination pagination-sm">${pageStr}</ul>
+								<ul class="pagination pagination-sm">
+									<c:forEach  varStatus="status" begin="${pageBean.beginPageIndex }"  end="${pageBean.endPageIndex}">
+										<c:if test="${status.index+pageBean.beginPageIndex-1 == pageBean.currentPage }">
+											<li><a disabled="disabled" href="javascript:void(0)">${status.index+pageBean.beginPageIndex-1 }</a></li>
+										</c:if>
+										<c:if test="${status.index+pageBean.beginPageIndex-1 != pageBean.currentPage }">
+											<li><a href = "admin/exampaper-list-${status}-${status.index+pageBean.beginPageIndex-1 }" >${status.index+pageBean.beginPageIndex-1 }</a></li>
+										</c:if>
+									</c:forEach>
+								</ul>
 								</div>
 
 						</div>

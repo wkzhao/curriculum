@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -23,7 +24,7 @@ public class KnowledgeController
     @Autowired
     KnowledgePointServiceImpl knowledgePointService;
 
-    @RequestMapping(value={"admin/knowledge-list"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value={"admin/knowledge-list"}, method = RequestMethod.GET)
     public ModelAndView toKnowledgeList()
     {
         ModelAndView view = new ModelAndView("admin/knowledge-list");
@@ -31,14 +32,21 @@ public class KnowledgeController
         view.addObject("knowledgeList", knowledgeList);
         return view;
     }
-    @RequestMapping(value={"admin/add-knowledge"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value={"admin/add-knowledge"}, method = RequestMethod.GET)
     public ModelAndView toAddKnowledge() {
         ModelAndView view = new ModelAndView("admin/add-knowledge");
         return view;
     }
-    @RequestMapping(value={"admin/add-knowledge"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    @RequestMapping(value={"admin/add-knowledge"}, method = RequestMethod.POST)
     @ResponseBody
     public String addKnowledge(@RequestBody Knowledge knowledge) throws JsonProcessingException { this.knowledgeService.addKnowledge(knowledge);
         return ReturnJacksonUtil.resultOk();
+    }
+
+    @RequestMapping(value = "admin/changeKnowledgeProperty",method = RequestMethod.POST)
+    @ResponseBody
+    public String changeProperty(@RequestBody Knowledge knowledge) throws JsonProcessingException {
+        knowledgeService.changeProperty(knowledge);
+        return  ReturnJacksonUtil.resultOk();
     }
 }

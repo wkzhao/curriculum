@@ -5,12 +5,13 @@ import com.curriculum.interceptor.annotation.LoginRequired;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping({""})
 public class HomeController
 {
-    @RequestMapping(value={"", "home"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value={"", "home"}, method = RequestMethod.GET)
     public String toHome(HttpSession session)
     {
         User user = (User)session.getAttribute("user");
@@ -20,7 +21,7 @@ public class HomeController
         return "home";
     }
     @LoginRequired
-    @RequestMapping(value={"admin/home"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value={"admin/home"}, method = RequestMethod.GET)
     public String toAdminHome() { return "redirect:knowledge-list";
     }
 }

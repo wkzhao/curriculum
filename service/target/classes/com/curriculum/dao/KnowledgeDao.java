@@ -2,10 +2,8 @@ package com.curriculum.dao;
 
 import com.curriculum.domain.Knowledge;
 import java.util.List;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+
+import org.apache.ibatis.annotations.*;
 
 public interface KnowledgeDao
 {
@@ -27,5 +25,12 @@ public interface KnowledgeDao
           +" from "+TABLE
           +" where id = #{id}")
    Knowledge getKnowledgeById(@Param("id") int id);
+
+  @Update(""
+          +" update "+TABLE
+          +" set name = #{knowledge.name},description = #{knowledge.description} "
+          +" where id = #{knowledge.id} "
+  )
+   int changeProperty(@Param("knowledge") Knowledge knowledge);
 }
 

@@ -8,9 +8,6 @@ public interface KnowledgeService
    List<Knowledge> getAllKnowledge();
 
    int addKnowledge(Knowledge paramKnowledge);
-}
 
-/* Location:           C:\Users\wenkun.zhao\Desktop\service-1.0-SNAPSHOT.jar
- * Qualified Name:     com.curriculum.service.KnowledgeService
- * JD-Core Version:    0.6.2
- */
+   int changeProperty(Knowledge knowledge);
+}

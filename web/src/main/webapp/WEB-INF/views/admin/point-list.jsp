@@ -73,10 +73,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</li>
 
 						<li>
-							<a href="admin/exampaper-list"><i class="fa fa-file-text-o"></i>试卷管理</a>
+							<a href="admin/exampaper-list-0-1"><i class="fa fa-file-text-o"></i>试卷管理</a>
 						</li>
 						<li>
-							<a href="admin/user-list/1"><i class="fa fa-user"></i>会员管理</a>
+							<a href="admin/user-list/1"><i class="fa fa-user"></i>学生管理</a>
 						</li>
 						<li class="active">
 							<a><i class="fa fa-cloud"></i>题库管理</a>
@@ -145,7 +145,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</dd>
 								</dl>
 								<div class="page-link-content">
-									<ul class="pagination pagination-sm">${pageStr}</ul>
+									<ul class="pagination pagination-sm">
+										<c:forEach  varStatus="status" begin="${pageBean.beginPageIndex }"  end="${pageBean.endPageIndex}">
+											<c:if test="${status.index+pageBean.beginPageIndex-1 == pageBean.currentPage }">
+												<li><a disabled="disabled" href="javascript:void(0)">${status.index+pageBean.beginPageIndex-1 }</a></li>
+											</c:if>
+											<c:if test="${status.index+pageBean.beginPageIndex-1 != pageBean.currentPage }">
+												<li><a href="admin/point-list-${knowledgeId}-${status.index+pageBean.beginPageIndex-1 }" >${status.index+pageBean.beginPageIndex-1 }</a></li>
+											</c:if>
+										</c:forEach>
+									</ul>
 								</div>
 							</div>
 							
@@ -154,7 +163,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<table class="table-striped table">
 									<thead>
 										<tr>
-											<td></td>
 											<td>ID</td>
 											<td>知识点名</td>
 											<td>题库名</td>
@@ -165,13 +173,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<tbody>
 										<c:forEach items="${knowledgePointList }" var="item">
 											<tr>
-												<td>
-												</td>
-												<td>${item.id }</td>
-												<td>${item.name }</td>
-												<td>${item.knowledgeName }</td>
-												<td>${item.description }</td>
-												<td></td>
+												<td><span class = "td-knowledgePoint-id">${item.id }</span></td>
+												<td><span class = "td-knowledgePoint-name">${item.name }</span></td>
+												<td><span class = "td-knowledgePoint-knowledge" data-id = "${item.knowledgeId}">${item.knowledgeName }</span></td>
+												<td><span class = "td-knowledgePoint-description">${item.description }</span></td>
+												<td><a class="change-property">修改属性</a></td>
 											</tr>
 										</c:forEach>
 										
@@ -179,7 +185,54 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</table>
 							</div>
 							<div id="page-link-content">
-								<ul class="pagination pagination-sm">${pageStr}</ul>
+								<ul class="pagination pagination-sm">
+									<c:forEach  varStatus="status" begin="${pageBean.beginPageIndex }"  end="${pageBean.endPageIndex}">
+										<c:if test="${status.index+pageBean.beginPageIndex-1 == pageBean.currentPage }">
+											<li><a disabled="disabled" href="javascript:void(0)">${status.index+pageBean.beginPageIndex-1 }</a></li>
+										</c:if>
+										<c:if test="${status.index+pageBean.beginPageIndex-1 != pageBean.currentPage }">
+											<li><a href="admin/point-list-${knowledgeId}-${status.index+pageBean.beginPageIndex-1 }" >${status.index+pageBean.beginPageIndex-1 }</a></li>
+										</c:if>
+									</c:forEach>
+								</ul>
+							</div>
+							<div class="modal fade" id="change-knowledgePoint-property-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+											<h6 class="modal-title" id="myModalLabel">修改知识点属性</h6>
+										</div>
+										<div class="modal-body">
+											<form>
+												<span id="add-update-knowledgePointId" style="display:none;"></span>
+												<div class="form-line add-update-knowledgePointKnowledgeId">
+													<span class="form-label">所属知识库：</span>
+													<select name="knowledgeId">
+														<c:forEach items="${knowledgeList}" var="item">
+															<option value="${item.id}">${item.name}</option>
+														</c:forEach>
+													</select>
+													<span class="form-message"></span>
+												</div>
+												<div class="form-line add-update-knowledgePointName">
+													<span class="form-label"><span class="warning-label">*</span>知识点名称：</span>
+													<input type="text" class="df-input-narrow">
+													<span class="form-message"></span>
+												</div>
+												<div class="form-line add-update-knowledgePointDescription">
+													<span class="form-label">知识点描述：</span>
+													<input type="text" class="df-input-narrow">
+													<span class="form-message"></span>
+												</div>
+											</form>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-default" data-dismiss="modal">关闭窗口</button>
+											<button id="update-knowledgePoint-btn" type="button" class="btn btn-primary">确定修改</button>
+										</div>
+									</div>
+								</div>
 							</div>
 
 						</div>

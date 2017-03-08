@@ -226,7 +226,7 @@ question_add = {
 				$(".form-question-opt .form-message").text("选项不能超过6个");
 				return false;
 			}
-			var text = "<span class=\"add-opt-item\"><label class=\"que-opt-no\">" + String.fromCharCode(65 + optlength) + "</label><input type=\"text\" class=\"df-input-narrow form-question-opt-item\"/> <span class=\"add-img add-opt-img\">添加图片</span> <span><i class=\"small-icon ques-remove-opt fa fa-minus-square\" title=\"删除此选项\"></i></span> </span>";
+			var text = "<span class=\"add-opt-item\"><label class=\"que-opt-no\">" + String.fromCharCode(65 + optlength) + "</label><input type=\"text\" class=\"df-input-narrow form-question-opt-item\"/><span><i class=\"small-icon ques-remove-opt fa fa-minus-square\" title=\"删除此选项\"></i></span> </span>";
 			$(".add-opt-items").append(text);
 			question_add.copyToAnswer();
 		});

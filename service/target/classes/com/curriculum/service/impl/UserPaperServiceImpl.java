@@ -18,17 +18,17 @@ public class UserPaperServiceImpl
 
     public List<UserPaper> getUserPaperByUserId(int userId)
     {
-        List userPaperList = this.userPaperDao.getUserPaperByUserId(userId);
+        List userPaperList = userPaperDao.getUserPaperByUserId(userId);
         return userPaperList == null ? Collections.emptyList() : userPaperList;
     }
 
     public int addUserPaper(int userId, int paperId)
     {
-        return this.userPaperDao.addUserPaper(userId, paperId);
+        return userPaperDao.addUserPaper(userId, paperId);
     }
 
     public int getCountByUserAndPaper(int userId, int paperId)
     {
-        return this.userPaperDao.getCountByUserAndPaper(userId, paperId);
+        return userPaperDao.getCountByUserAndPaper(userId, paperId);
     }
 }

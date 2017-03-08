@@ -10,41 +10,40 @@ var question_list = {
 		this.bindUpdateExampaper();
 		this.publishPaper();
 		this.deletePaper();
-		this.offlinePaper();
 	},
-	
+
 	bindChangeSearchParam : function bindChangeSearchParam(){
 		$("#question-filter dl dd span").click(function(){
 			if($(this).hasClass("label"))return false;
-			
-			
+
+
 			var genrateParamOld = question_list.genrateParamOld();
-			
+
 			if($(this).parent().parent().attr("id") == "question-filter-pagetype" ){
-				genrateParamOld.pagetype = $(this).data("id");
+				genrateParamOld.status = $(this).data("id");
 				question_list.redirectUrl(genrateParamOld);
-				
+
 			}else return false;
-			
+
 		});
-		
+
 		$(".pagination li a").click(function(){
 			var pageId = $(this).data("id");
 			if(pageId == null || pageId == "")return false;
 			var genrateParamOld = question_list.genrateParamOld();
 			genrateParamOld.page = pageId;
 			question_list.redirectUrl(genrateParamOld);
-			
+
 		});
 	},
-	
-	
+
+
 	publishPaper : function publishPaper(){
 		var param = new Object();
 		$(".publish-paper").click(function(){
 			var paperId = $(this).parent().parent().find("input").val();
             param.pageId = paperId;
-            param.status = 1;
+            param.status = 2;
 			if (confirm("确定上线吗？上线后的试卷将可以进行考试")) {
 				$.ajax({
 					headers : {
@@ -56,10 +55,10 @@ var question_list = {
 					data : JSON.stringify(param),
                     success : function(msg) {
                         if (msg.status.code == 0) {
-                            alert("上线成功");
+                            util.success("上线成功");
                             window.location.reload();
                         } else {
-                            alert("操作失败请稍后尝试");
+                            util.error(msg.status.msg);
                         }
 
                     },
@@ -70,39 +69,7 @@ var question_list = {
 			}
 		});
 	},
-	
-	offlinePaper : function offlinePaper(){
-		$(".offline-paper").click(function(){
-			var param = new Object();
-			var paperId = $(this).parent().parent().find("input").val();
-			param.pageId = paperId;
-			param.status = 2;
-			if (confirm("确定下线吗？下线后的试卷将无法再进行考试")) {
-				$.ajax({
-					headers : {
-						'Accept' : 'application/json',
-						'Content-Type' : 'application/json'
-					},
-					type : "POST",
-					url : "admin/changePaperStatus",
-					data : JSON.stringify(param),
-                    success : function(msg) {
-                        if (msg.status.code == 0) {
-                            alert("下线成功");
-                            window.location.reload();
-                        } else {
-                            alert("操作失败请稍后尝试");
-                        }
 
-                    },
-					error : function(jqXHR, textStatus) {
-						util.error("操作失败请稍后尝试");
-					}
-				});
-			}
-		});
-	},
-	
 	deletePaper : function deletePaper(){
 		$(".delete-paper").click(function(){
 			var paperId = $(this).parent().parent().find("input").val();
@@ -117,53 +84,51 @@ var question_list = {
 					data : JSON.stringify(paperId),
 					success : function(msg) {
 						if (msg.status.code == 0) {
-							alert("删除成功");
+							util.success("删除成功");
 							window.location.reload();
 						} else {
-							alert("操作失败请稍后尝试");
+							util.error(msg.status.msg);
 						}
 	
 					},
-					error : function(jqXHR, textStatus) {
-						alert("操作失败请稍后尝试");
+					error : function() {
+						util.error("操作失败请稍后尝试");
 					}
 				});
 			}
 		});
 	},
-	
+
 	genrateParamOld :function genrateParamOld(){
-		var pagetype = $("#question-filter-pagetype dd .label").data("id");
+		var status = $("#question-filter-pagetype dd .label").data("id");
 		var page = 1;
-		
+
 		var data = new Object();
-		data.pagetype= pagetype;
+		data.status= status;
 		data.page = page;
-		
+
 		return data;
 	},
 
 	redirectUrl : function(newparam) {
-		var paramurl = newparam.pagetype;
+		var paramurl = newparam.status;
 		paramurl = paramurl + "-" + newparam.page;
-		paramurl = paramurl + ".html";
+		paramurl = paramurl;
 
 		document.location.href = document.getElementsByTagName('base')[0].href
-				+ 'admin/exampaperfilter-' + paramurl;
+				+ 'admin/exampaper-list-' + paramurl;
 	},
-	
+
 	bindChangeProperty : function bindChangeProperty(){
 		$(".change-property").click(function(){
 			$("#change-property-modal").modal({backdrop:true,keyboard:true});
 			
 			var tr = $(this).parent().parent();
 			var paper_name = tr.find(".td-paper-name").text();
-			var paper_type = tr.find(".td-paper-type").data("id");
 			var paper_duration  = tr.find(".td-paper-duration").text();
-			var paper_id =  $(this).parent().parent().find(":checkbox").val();
+			var paper_id =  tr.find(".td-paper-id").text();
 			$(".add-update-exampapername input").val(paper_name);
 			$(".add-update-duration input").val(paper_duration);
-			$("#exampaper-type-select").val(paper_type);
 			$("#add-update-exampaperid").text(paper_id);
 		});
 	},
@@ -172,33 +137,30 @@ var question_list = {
 			var verify_result = question_list.verifyInput();
 			var paper_id = $("#add-update-exampaperid").text();
 			if (verify_result) {
-				
+
 				var data = new Object();
 				data.id = paper_id;
 				data.name = $(".add-update-exampapername input").val();
-				data.duration = $(".add-update-duration input").val();
-				data.paper_type = $("#exampaper-type-select").val();
+				data.time = $(".add-update-duration input").val();
 				$.ajax({
 					headers : {
 						'Accept' : 'application/json',
 						'Content-Type' : 'application/json'
 					},
 					type : "POST",
-					url : "admin/paper-update",
+					url : "admin/changePaperProperty",
 					data : JSON.stringify(data),
-					success : function(message, tst, jqXHR) {
-						if (!util.checkSessionOut(jqXHR))
-							return false;
-						if (message.result == "success") {
+					success : function(msg) {
+						if (msg.status.code == 0) {
 							util.success("修改成功", function(){
 								window.location.reload();
 							});
 						} else {
-							util.error("操作失败请稍后尝试:" + message.result);
+							util.error("操作失败请稍后尝试");
 						}
 
 					},
-					error : function(jqXHR, textStatus) {
+					error : function() {
 						util.error("操作失败请稍后尝试");
 					}
 				});

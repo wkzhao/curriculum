@@ -110,30 +110,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 									<span style="color:#428bca;">知识类型：</span>
 									<div>
-										<span>${fieldName }</span>
-										<span id="knowledgePointId" style="display:none;">${knowledgePointId }</span>
-										<span id="questionTypeId" style="display:none;">${questionTypeId }</span>
-										
+										<span>${knowledgePointName}</span>
 									</div>
-									<span style="color:#428bca;">题型库：</span>
 									<div>
-										<span id="practice-type" class="pt-singlechoice">${questionTypeName }[ 共 <span class="pt-tno">${amount }</span> 题 ]<span class="pt-qcode" style="display:none;">qt-singlechoice</span></span>
+										[ 共 <span class="pt-tno">${amount }</span> 题 ]
 									</div>
-									<span style="color:#428bca;">学习进度：</span>
-										<div class="h-progress" style="margin-top:5px;" title="50%">
-											<span></span>
-										</div>
-									<span id="exam-timestamp" style="display:none;">0</span>
-									<div id="answer-save-info"></div>
-
-								</div>
-								<div id="question-submit">
-									<button class="btn-success btn" style="width:100%;" id="switch-model-btn" data-exam="true"> 
-										答题模式
-									</button>
-								</div>
-								<div id="exam-info" style="display:none;">
-									<span id="answer-hashcode"></span>
 								</div>
 							</div>
 
@@ -144,16 +125,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="def-bk" id="bk-exampaper">
 							<div class="expand-bk-content" id="bk-conent-exampaper">
 								<div id="exampaper-header">
-									<div id="exampaper-title"  style="margin-bottom:15px;">
-										<i class="fa fa-paper-plane"></i>
-										<span id="exampaper-title-name"> ${fieldName } - ${practiceName } </span>
-
-									</div>
-									<!-- <div id="exampaper-desc-container">
-									<div id="exampaper-desc" class="exampaper-filter">
-
-									</div>
-									</div> -->
 
 								</div>
 								<ul id="exampaper-body">

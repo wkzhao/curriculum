@@ -1,5 +1,6 @@
 package com.curriculum.controller;
 
+import com.curriculum.constant.Constants;
 import com.curriculum.constant.WebCodeEnum;
 import com.curriculum.domain.PageBean;
 import com.curriculum.domain.User;
@@ -12,11 +13,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -26,59 +23,59 @@ public class UserController
     @Autowired
     UserService userService;
 
-    @RequestMapping(value={"user-register"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value={"user-register"}, method = RequestMethod.GET)
     public ModelAndView toRegisterPage()
     {
         return new ModelAndView("register");
     }
     @ResponseBody
-    @RequestMapping(value={"user-register"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    @RequestMapping(value={"user-register"}, method = RequestMethod.POST)
     public String register(@RequestBody User newUser, HttpSession session) throws JsonProcessingException {
         User user = userService.findUserByUsername(newUser.getUsername());
         if (user != null) {
             return ReturnJacksonUtil.resultWithFailed(WebCodeEnum.USER_ALREADY_EXISTS);
         }
         newUser.setLoginTime(new Date());
-        this.userService.addUser(newUser);
+        userService.addUser(newUser);
         if( session.getAttribute("user") == null ){
             session.setAttribute("user", newUser);
         }
         return ReturnJacksonUtil.resultOk();
     }
 
-    @RequestMapping(value={"admin/user-list/{currentPage}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value={"admin/user-list/{currentPage}"}, method = RequestMethod.GET)
     public ModelAndView getUsersByPage(@PathVariable("currentPage") int currentPage) {
         ModelAndView view = new ModelAndView("admin/user-list");
-        int userCount = this.userService.getUsersCount();
-        PageBean pageBean = new PageBean(currentPage, 10, userCount);
-        List userList = this.userService.getUsersByPage(pageBean);
+        int userCount = userService.getUsersCount();
+        PageBean pageBean = new PageBean(currentPage, Constants.PAGE_SIZE, userCount);
+        List userList = userService.getUsersByPage(pageBean);
         view.addObject("userList", userList);
         view.addObject("pageBean", pageBean);
         return view;
     }
 
     @ResponseBody
-    @RequestMapping(value={"admin/changeUserStatus"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    @RequestMapping(value={"admin/changeUserStatus"}, method = RequestMethod.POST)
     public String changeUserStatus(@RequestBody Map<String, String> map) throws JsonProcessingException { int userId = Integer.parseInt((String)map.get("userId"));
         int status = Integer.parseInt((String)map.get("status"));
-        User user = this.userService.getUserById(userId);
+        User user = userService.getUserById(userId);
         user.setStatus(status);
-        this.userService.changeUserInfo(user);
+        userService.changeUserInfo(user);
         return ReturnJacksonUtil.resultOk(); }
 
-    @RequestMapping(value={"admin/add-user"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value={"admin/add-user"}, method = RequestMethod.GET)
     public ModelAndView toAddAdmin() {
         ModelAndView view = new ModelAndView("admin/add-user");
         return view;
     }
-    @RequestMapping(value={"admin/add-user"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    @RequestMapping(value={"admin/add-user"}, method = RequestMethod.POST)
     @ResponseBody
-    public String addAdmin(@RequestBody User user) throws JsonProcessingException { User u = this.userService.findUserByUsername(user.getUsername());
+    public String addAdmin(@RequestBody User user) throws JsonProcessingException { User u = userService.findUserByUsername(user.getUsername());
         if (u != null) {
             return ReturnJacksonUtil.resultWithFailed(WebCodeEnum.USER_ALREADY_EXISTS);
         }
         user.setLoginTime(new Date());
-        this.userService.addUser(user);
+        userService.addUser(user);
         return ReturnJacksonUtil.resultOk();
     }
 }

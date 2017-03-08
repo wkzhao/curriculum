@@ -147,10 +147,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<a> <i class="fa fa-dashboard"></i> 用户中心 </a>
 							</li>
 							<li>
-								<a href="student/analysis"> <i class="fa fa-bar-chart-o"></i> 统计分析 </a>
+								<a href="student/analysis/${sessionScope.user.id}"> <i class="fa fa-bar-chart-o"></i> 统计分析 </a>
 							</li>
 							<li>
-								<a href="student/exam-history"> <i class="fa fa-history"></i> 考试历史 </a>
+								<a href="student/exam-history/${sessionScope.user.id}"> <i class="fa fa-history"></i> 考试历史 </a>
 							</li>
 						</ul>
 					</div>

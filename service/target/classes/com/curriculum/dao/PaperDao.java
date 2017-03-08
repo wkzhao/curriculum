@@ -2,6 +2,8 @@ package com.curriculum.dao;
 
 import com.curriculum.domain.Exampaper;
 import java.util.List;
+
+import com.curriculum.domain.PageBean;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
@@ -13,11 +15,29 @@ public interface PaperDao
 {
    String TABLE = "paper";
 
-  @Select(""
-          +" select id,name,paper_point,pass_point,time,content,creator,paper_type_id,status,question_ids  "
-          +" from " +TABLE
-  )
-   List<Exampaper> getAllPapers();
+
+    @Select(" <script> "
+            +" select id,name,paper_point,pass_point,time,creator,paper_type_id,status,question_ids  "
+            +" from "+ TABLE
+            +" <trim prefix=\"WHERE\" prefixoverride=\"AND |OR\"> "
+            +" <if test=\"status != 0\"> status = #{status} </if> "
+            +" </trim> "
+            +" <if test = 'pageBean != null'> "
+            +" limit #{pageBean.recordIndex},#{pageBean.pageSize} "
+            +" </if> "
+            +" </script> "
+    )
+    List<Exampaper>  getExamPaperByPage(@Param("status") int status, @Param("pageBean") PageBean pageBean);
+
+    @Select(" <script> "
+            +" select count(1) "
+            +" from "+TABLE
+            +" <if test = 'status != 0 '> "
+            +" where status = #{status} "
+            +" </if> "
+            +" </script> "
+    )
+    int getPaperCount(@Param("status") int status);
 
   @Select(""
           +" select id,name,paper_point,pass_point,time,content,creator,paper_type_id,status,question_ids "
@@ -29,6 +49,7 @@ public interface PaperDao
   @Select(""
           +" select id,name "
           +" from " +TABLE
+          +" where status = 2 "
   )
    List<Exampaper> getSimplePapers();
 
@@ -67,5 +88,13 @@ public interface PaperDao
           +" where id = #{id} "
   )
    int changePaperQuestionIds(@Param("questionIds") String questionsIds, @Param("id") int id);
+
+
+  @Update(""
+          +" update paper "
+          +" set time = #{paper.time},name = #{paper.name} "
+          +" where id = #{paper.id} "
+  )
+   int changePaperProperty(@Param("paper") Exampaper exampaper);
 }
 

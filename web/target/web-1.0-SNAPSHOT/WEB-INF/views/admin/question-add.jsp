@@ -104,10 +104,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</li>
 
 						<li>
-							<a href="admin/exampaper-list"><i class="fa fa-file-text-o"></i>试卷管理</a>
+							<a href="admin/exampaper-list-0-1"><i class="fa fa-file-text-o"></i>试卷管理</a>
 						</li>
 						<li>
-							<a href="admin/user-list/1"><i class="fa fa-user"></i>会员管理</a>
+							<a href="admin/user-list/1"><i class="fa fa-user"></i>学生管理</a>
 						</li>
 						<li>
 							<a href="admin/knowledge-list"><i class="fa fa-cloud"></i>题库管理</a>
@@ -140,11 +140,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<a> <i class="fa fa-pencil-square-o"></i> 添加试题 </a>
 
 							</li>
-							<li>
-								<a href="admin/question-import"> <i class="fa fa-cloud-upload"></i> 导入试题 </a>
-
-							</li>
-
 						</ul>
 
 					</div>
@@ -195,8 +190,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								
 								<div class="form-line question-content">
 									<span class="form-label"><span class="warning-label">*</span>试题内容：</span>
-									<textarea class="add-question-ta"></textarea>									
-									<span class="add-img add-content-img" style="width:100px;">添加图片</span>
+									<textarea class="add-question-ta"></textarea>
 									<span class="form-message"></span>
 								</div>
 								<div class="form-line form-question-opt" style="display: block;">
@@ -204,19 +198,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="add-opt-items">
 										<span class="add-opt-item"><label class="que-opt-no">A</label>
 											<input type="text" class="df-input-narrow form-question-opt-item">
-											<span class="add-img add-opt-img">添加图片</span>
 										</span>
 										<span class="add-opt-item"><label class="que-opt-no">B</label>
 											<input type="text" class="df-input-narrow form-question-opt-item">
-											<span class="add-img add-opt-img">添加图片</span>
 										</span>
 										<span class="add-opt-item"><label class="que-opt-no">C</label>
 											<input type="text" class="df-input-narrow form-question-opt-item">
-											<span class="add-img add-opt-img">添加图片</span> <span><i class="small-icon ques-remove-opt fa fa-minus-square" title="删除此选项"></i></span>
+											 <span><i class="small-icon ques-remove-opt fa fa-minus-square" title="删除此选项"></i></span>
 										</span>
 										<span class="add-opt-item"><label class="que-opt-no">D</label>
 											<input type="text" class="df-input-narrow form-question-opt-item">
-											<span class="add-img add-opt-img">添加图片</span> <span><i class="small-icon ques-remove-opt fa fa-minus-square" title="删除此选项"></i></span>
+											 <span><i class="small-icon ques-remove-opt fa fa-minus-square" title="删除此选项"></i></span>
 										</span>
 									</div>
 								<!--	<div class="small-icon" id="ques-add-opt" title="娣诲姞閫夐」"></div>-->
@@ -280,35 +272,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 							</form>
 
-						</div>
-						<div class="modal fade">
-						  <div class="modal-dialog">
-						    <div class="modal-content">
-						      <div class="modal-header">
-						        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						        <h4 class="modal-title">图片上传工具</h4>
-						      </div>
-						      <div class="modal-body">
-						        <div id="add-question-img-dialog" title="图片上传工具">
-									 <form>
-										<div class="form-line img-destination">
-											<span class="form-label">添加至：</span>
-											<label></label>
-											<input type="hidden" value=""/>
-										</div>
-										<div class="form-line add-update-quetstionfile">
-											<span class="form-label">上传图片：</span>
-											<div id="div-file-list">
-											</div>
-											<div class="form-line" id="uploadify"></div>
-											<span class="form-message">请上传png、jpg图片文件，且不能大于100KB。为了使得图片显示正常，请上传的图片长宽比例为2:1</span>
-										</div>
-									</form> 
-								</div>
-						      </div>
-						      
-						    </div><!-- /.modal-content -->
-						  </div><!-- /.modal-dialog -->
 						</div>
 					</div>
 				</div>

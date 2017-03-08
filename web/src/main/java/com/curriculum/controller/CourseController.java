@@ -35,40 +35,41 @@ public class CourseController
     @Autowired
     KnowledgePointServiceImpl knowledgePointService;
 
-    @RequestMapping(value={"admin/course-list/{currentPage}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value={"admin/course-list/{currentPage}"}, method = RequestMethod.GET)
     public ModelAndView getCourseList(@RequestParam(value="pointId", required=false) String pointIdString, @PathVariable("currentPage") int currentPage)
     {
         ModelAndView view = new ModelAndView("admin/course-list");
         int pointId = pointIdString == null ? 0 : Integer.parseInt(pointIdString);
-        int count = this.courseService.getCountByPointId(pointId);
+        int count = courseService.getCountByPointId(pointId);
         PageBean pageBean = new PageBean(currentPage, 10, count);
-        List courseList = this.courseService.getCourseByPointId(pointId, pageBean);
+        List courseList = courseService.getCourseByPointId(pointId, pageBean);
         view.addObject("courseList", courseList);
         view.addObject("pageBean", pageBean);
         return view;
     }
-    @RequestMapping(value={"admin/add-course"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+
+    @RequestMapping(value={"admin/add-course"}, method = RequestMethod.GET)
     public ModelAndView toAddCourse() {
         ModelAndView view = new ModelAndView("admin/add-course");
-        List knowledgePointList = this.knowledgePointService.getAllPoints();
+        List knowledgePointList = knowledgePointService.getPointsByPage(0,null);
         view.addObject("knowledgePointList", knowledgePointList);
         return view;
     }
-    @RequestMapping(value={"admin/add-course"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    @RequestMapping(value={"admin/add-course"}, method = RequestMethod.POST)
     @ResponseBody
     public String addCourse(@RequestBody Course course, HttpSession session) throws JsonProcessingException { User user = (User)session.getAttribute("user");
         course.setCreator(user.getUsername());
-        this.courseService.addCourse(course);
+        courseService.addCourse(course);
         return ReturnJacksonUtil.resultOk(); }
 
-    @RequestMapping(value={"admin/course-preview/{courseId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value={"admin/course-preview/{courseId}"}, method = RequestMethod.GET)
     public ModelAndView coursePreview(@PathVariable("courseId") int courseId) {
         ModelAndView view = new ModelAndView("admin/course-preview");
-        Course course = this.courseService.getCourseById(courseId);
+        Course course = courseService.getCourseById(courseId);
         view.addObject("course", course);
         return view;
     }
-    @RequestMapping(value={"admin/course-upload-video"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    @RequestMapping(value={"admin/course-upload-video"}, method = RequestMethod.POST)
     @ResponseBody
     public String videoUpload(@RequestParam("upload") MultipartFile file, HttpServletRequest request ) throws IOException {
         String path = request.getSession().getServletContext().getRealPath("/") + "resources" + File.separator + "upload" + File.separator + "course";
@@ -83,7 +84,7 @@ public class CourseController
 
     @RequestMapping(value = "admin/course-upload-image",method = RequestMethod.POST)
     @ResponseBody
-    public String imageUpload(@RequestParam("upload") MultipartFile file,HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void imageUpload(@RequestParam("upload") MultipartFile file,HttpServletRequest request, HttpServletResponse response) throws IOException {
         String fileName = file.getOriginalFilename();
         response.reset();
         PrintWriter out = response.getWriter();
@@ -99,6 +100,5 @@ public class CourseController
         out.println("</script>");
         out.flush();
         out.close();
-        return "上传成功";
     }
 }

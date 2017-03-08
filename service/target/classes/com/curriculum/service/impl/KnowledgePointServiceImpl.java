@@ -2,6 +2,7 @@ package com.curriculum.service.impl;
 
 import com.curriculum.dao.KnowledgePointDao;
 import com.curriculum.domain.KnowledgePoint;
+import com.curriculum.domain.PageBean;
 import com.curriculum.service.KnowledgePointService;
 import java.util.Collections;
 import java.util.List;
@@ -16,10 +17,16 @@ public class KnowledgePointServiceImpl
     @Autowired
     KnowledgePointDao knowledgePointDao;
 
-    public List<KnowledgePoint> getAllPoints()
-    {
-        List knowledgePointList = this.knowledgePointDao.getAllPoints();
+
+    @Override
+    public List<KnowledgePoint> getPointsByPage(int knowledgeId, PageBean pageBean) {
+        List<KnowledgePoint> knowledgePointList =  knowledgePointDao.getPointsByPage(knowledgeId,pageBean);
         return knowledgePointList == null ? Collections.emptyList() : knowledgePointList;
+    }
+
+    @Override
+    public int getPointCount(int knowledgeId) {
+        return knowledgePointDao.getPointCount(knowledgeId);
     }
 
     public List<KnowledgePoint> getPointsByKnowledgeId(int knowledgeId)
@@ -36,5 +43,10 @@ public class KnowledgePointServiceImpl
     {
         int num = this.knowledgePointDao.addPoint(knowledgePoint);
         return num;
+    }
+
+    @Override
+    public int changeProperty(KnowledgePoint knowledgePoint) {
+        return knowledgePointDao.changeProperty(knowledgePoint);
     }
 }

@@ -87,10 +87,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<a href="admin/question-list/0-0-0-0-1"><i class="fa fa-edit"></i>试题管理</a>
 						</li>
 						<li>
-							<a href="admin/exampaper-list"><i class="fa fa-file-text-o"></i>试卷管理</a>
+							<a href="admin/exampaper-list-0-1"><i class="fa fa-file-text-o"></i>试卷管理</a>
 						</li>
 						<li>
-							<a href="admin/user-list/1"><i class="fa fa-user"></i>会员管理</a>
+							<a href="admin/user-list/1"><i class="fa fa-user"></i>学生管理</a>
 						</li>
 						<li>
 							<a href="admin/knowledge-list"><i class="fa fa-cloud"></i>题库管理</a>
@@ -120,9 +120,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</li>
 							<li>
 								<a href="admin/question-add"> <i class="fa fa-pencil-square-o"></i> 添加试题 </a>
-							</li>
-							<li>
-								<a href="admin/question-import"> <i class="fa fa-cloud-upload"></i> 导入试题 </a>
 							</li>
 						</ul>
 					</div>

@@ -53,6 +53,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</style>
 	</head>
 	<body>
+	<c:if test="${ !isAdmin }">
 		<header>
 			<div class="container">
 				<div class="row">
@@ -102,7 +103,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</nav>
 			</div>
 		</div>
-
+	</c:if>
 		<!-- Navigation bar ends -->
 
 		<!-- Slider starts -->
@@ -112,8 +113,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<!-- Slider (Flex Slider) -->
 
 			<div class="container" style="min-height:500px;">
-
 				<div class="row">
+					<c:if test="${ !isAdmin }">
 					<div class="col-xs-3">
 						<ul class="nav default-sidenav">
 							<li>
@@ -123,10 +124,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<a> <i class="fa fa-bar-chart-o"></i> 统计分析 </a>
 							</li>
 							<li>
-								<a href="student/exam-history"> <i class="fa fa-history"></i> 考试历史 </a>
+								<a href="student/exam-history/${sessionScope.user.id}"> <i class="fa fa-history"></i> 考试历史 </a>
 							</li>
 						</ul>
 					</div>
+					</c:if>
 					<div class="col-xs-9">
 						<div class="page-header">
 							<h1><i class="fa fa-bar-chart-o"></i> 统计分析</h1>
@@ -167,7 +169,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 			</div>
 		</div>
-
+	    <c:if test="${ !isAdmin }">
 		<footer>
 			<div class="container">
 				<div class="row">
@@ -183,6 +185,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 
 		</footer>
+		</c:if>
 
 		<!-- Slider Ends -->
 

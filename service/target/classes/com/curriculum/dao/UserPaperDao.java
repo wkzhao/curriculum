@@ -29,6 +29,7 @@ public interface UserPaperDao
           +" select count(1) "
           +" from "+TABLE
           +" where user_id = #{userId} "
+          +" and paper_id = #{paperId} "
   )
    int getCountByUserAndPaper(@Param("userId") int userId, @Param("paperId") int paperId);
 }

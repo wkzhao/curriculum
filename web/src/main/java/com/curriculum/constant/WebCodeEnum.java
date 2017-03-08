@@ -11,7 +11,8 @@ public enum WebCodeEnum
     USER_ALREADY_EXISTS(100003, "username already exsits", "用户名已存在"),
     RETURN_NULL_ERROR(100004, "Return Null", "返回为空"),
     DELETE_QUESTION_ERROR(100005, "delete question error", "删除试题失败"),
-    DELETE_PAPER_ERROR(100006, "delete paper error", "删除试卷失败");
+    NO_PAPER_ERROR(100006, "no paper error", "删除试卷失败"),
+    DELETE_PAPER_ERROR(100007," can't delete this paper","");
 
     private int errorCode;
     private String enErrorMsg;

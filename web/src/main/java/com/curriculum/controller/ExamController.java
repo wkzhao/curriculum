@@ -16,10 +16,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -39,25 +36,25 @@ public class ExamController
     @Autowired
     UserPaperServiceImpl userPaperService;
 
-    @RequestMapping(value={"start-exam"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value={"start-exam"}, method = RequestMethod.GET)
     public ModelAndView startExam()
     {
         ModelAndView view = new ModelAndView("start-exam");
-        List exampaperList = this.exampaperService.getSimplePapers();
+        List exampaperList = exampaperService.getSimplePapers();
         view.addObject("exampaperList", exampaperList);
-        List knowledgePointList = this.knowledgePointService.getAllPoints();
+        List knowledgePointList = knowledgePointService.getPointsByPage(0,null);
         view.addObject("knowledgePointList", knowledgePointList);
         return view;
     }
-    @RequestMapping(value={"student/examing/{paperId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value={"student/examing/{paperId}"}, method = RequestMethod.GET)
     public ModelAndView exam(@PathVariable("paperId") int paperId, HttpSession session) {
         User user = (User)session.getAttribute("user");
-        int count = this.userPaperService.getCountByUserAndPaper(user.getId(), paperId);
+        int count = userPaperService.getCountByUserAndPaper(user.getId(), paperId);
         if (count > 0) {
             return new ModelAndView("has-examed");
         }
         ModelAndView view = new ModelAndView("student/examing");
-        Exampaper exampaper = this.exampaperService.getPaperById(paperId);
+        Exampaper exampaper = exampaperService.getPaperById(paperId);
         Map map = ExampaperUtil.XmlToQuestionMap(exampaper.getContent());
         view.addObject("singleQuestions", map.get(Integer.valueOf(1)));
         view.addObject("multiQuestions", map.get(Integer.valueOf(2)));
@@ -75,13 +72,13 @@ public class ExamController
         view.addObject("time", Integer.valueOf(exampaper.getTime() * 60));
         return view;
     }
-    @RequestMapping(value={"student/exam-finished"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    @RequestMapping(value={"student/exam-finished"}, method = RequestMethod.POST)
     @ResponseBody
     public String examFinished(@RequestBody Map<String, Object> map, HttpSession session) throws JsonProcessingException { int paperId = Integer.parseInt((String)map.get("paperId"));
         Map questionIdAnswerMap = (Map)map.get("answer");
         User user = (User)session.getAttribute("user");
-        this.userPaperService.addUserPaper(user.getId(), paperId);
-        this.userQuestionService.addUserQuestions(user, questionIdAnswerMap);
+        userPaperService.addUserPaper(user.getId(), paperId);
+        userQuestionService.addUserQuestions(user, questionIdAnswerMap);
         return ReturnJacksonUtil.resultOk();
     }
 }

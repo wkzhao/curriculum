@@ -1,10 +1,14 @@
 package com.curriculum.service;
 
 import com.curriculum.domain.Exampaper;
+import com.curriculum.domain.PageBean;
+
 import java.util.List;
 
  public interface ExampaperService {
-   List<Exampaper> getAllPapers();
+   List<Exampaper>  getExamPaperByPage(int status, PageBean pageBean);
+
+   int getPaperCount(int status);
 
    List<Exampaper> getSimplePapers();
 
@@ -19,4 +23,6 @@ import java.util.List;
    int changePaperContent(String paramString, int paramInt);
 
    int changePaperQuestionIds(String paramString, int paramInt);
+
+   int changePaperProperty(Exampaper exampaper);
 }

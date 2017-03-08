@@ -17,10 +17,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -37,36 +34,39 @@ public class PracticeController
     @Autowired
     KnowledgePointServiceImpl knowledgePointService;
 
-    @RequestMapping(value={"student/practice-incorrect/{knowledgePointId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value={"student/practice-incorrect/{knowledgePointId}"}, method = RequestMethod.GET)
     public ModelAndView practiceIncorrect(HttpSession session, @PathVariable("knowledgePointId") int pointId)
     {
         ModelAndView view = new ModelAndView("student/practice-incorrect");
         User user = (User)session.getAttribute("user");
-        List questionIds = this.userQuestionService.getErrorQuestionIds(user.getId(), pointId + "");
-        List questionList = this.questionService.getQuestionByIds(questionIds);
+        List questionIds = userQuestionService.getErrorQuestionIds(user.getId(), pointId + "");
+        List questionList = questionService.getQuestionByIds(questionIds);
         view.addObject("questionList", questionList);
-        view.addObject("amount", Integer.valueOf(questionList.size()));
-        KnowledgePoint knowledgePoint = this.knowledgePointService.getPointById(pointId);
+        view.addObject("amount", questionList.size());
+        KnowledgePoint knowledgePoint = knowledgePointService.getPointById(pointId);
         view.addObject("knowledgePointName", knowledgePoint.getName());
         return view;
     }
-    @RequestMapping(value={"student/practice-improve/{knowledgePointId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value={"student/practice-improve/{knowledgePointId}"}, method = RequestMethod.GET)
     public ModelAndView toPracticeImprove(HttpSession session, @PathVariable("knowledgePointId") int pointId) {
         ModelAndView view = new ModelAndView("student/practice-improve");
         User user = (User)session.getAttribute("user");
         QuestionFilter questionFilter = new QuestionFilter(0L, pointId + "", 0L);
-        List questionList = this.questionService.getQuestionsByFilter(questionFilter, null);
+        List questionList = questionService.getQuestionsByFilter(questionFilter, null);
+        KnowledgePoint knowledgePoint = knowledgePointService.getPointById(pointId);
+        view.addObject("knowledgePointName",knowledgePoint.getName());
         view.addObject("questionList", questionList);
+        view.addObject("amount", questionList.size());
         return view;
     }
-    @RequestMapping(value={"student/practice-improve"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    @RequestMapping(value={"student/practice-improve"}, method = RequestMethod.POST)
     @ResponseBody
     public String practiceImprove(HttpSession session, @RequestBody Map<String, String> map) throws JsonProcessingException { User user = (User)session.getAttribute("user");
         Map questionIdAnswerMap = new HashMap();
         String questionId = (String)map.get("questionId");
         questionIdAnswerMap.put(questionId, map.get("uAnswer"));
-        this.userQuestionService.addUserQuestions(user, questionIdAnswerMap);
-        Question question = this.questionService.getQuestionById(Integer.parseInt(questionId));
+        userQuestionService.addUserQuestions(user, questionIdAnswerMap);
+        Question question = questionService.getQuestionById(Integer.parseInt(questionId));
         return ReturnJacksonUtil.resultOk(question, Locale.CHINA);
     }
 }

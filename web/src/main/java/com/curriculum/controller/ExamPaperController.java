@@ -1,7 +1,9 @@
 package com.curriculum.controller;
 
+import com.curriculum.constant.Constants;
 import com.curriculum.constant.WebCodeEnum;
 import com.curriculum.domain.Exampaper;
+import com.curriculum.domain.PageBean;
 import com.curriculum.domain.Question;
 import com.curriculum.domain.User;
 import com.curriculum.service.impl.ExampaperServiceImpl;
@@ -19,10 +21,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -35,27 +34,31 @@ public class ExamPaperController
     @Autowired
     QuestionServiceImpl questionService;
 
-    @RequestMapping(value={"admin/exampaper-list"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
-    public ModelAndView toPaperList()
+    @RequestMapping(value={"admin/exampaper-list-{paperStatus}-{currentPage}"}, method = RequestMethod.GET)
+    public ModelAndView toPaperList(@PathVariable("paperStatus") int status,@PathVariable("currentPage") int currentPage)
     {
         ModelAndView view = new ModelAndView("admin/exampaper-list");
-        List exampaperList = this.exampaperService.getAllPapers();
+        int recordCount = exampaperService.getPaperCount(status);
+        PageBean pageBean = new PageBean(currentPage, Constants.PAGE_SIZE,recordCount);
+        List exampaperList = this.exampaperService.getExamPaperByPage(status,pageBean);
         view.addObject("exampaperList", exampaperList);
+        view.addObject("pageBean",pageBean);
+        view.addObject("status",status);
         return view;
     }
-    @RequestMapping(value={"admin/exampaper-add"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value={"admin/exampaper-add"}, method = RequestMethod.GET)
     public ModelAndView toAddPaperPage() {
         ModelAndView view = new ModelAndView("admin/exampaper-add");
         return view;
     }
     @ResponseBody
-    @RequestMapping(value={"admin/exampaper-add"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    @RequestMapping(value={"admin/exampaper-add"}, method = RequestMethod.POST)
     public String addPaper(@RequestBody Exampaper exampaper, HttpSession session) throws JsonProcessingException { exampaper.setCreator(((User)session.getAttribute("user")).getUsername());
         this.exampaperService.addPaper(exampaper);
         System.out.println(exampaper.getId());
         return ReturnJacksonUtil.resultOk(); }
 
-    @RequestMapping(value={"admin/exampaper-edit/{paperId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value={"admin/exampaper-edit/{paperId}"}, method = RequestMethod.GET)
     public ModelAndView editPaper(@PathVariable("paperId") int paperId) {
         ModelAndView view = new ModelAndView("admin/exampaper-edit");
         Exampaper exampaper = this.exampaperService.getPaperById(paperId);
@@ -75,7 +78,7 @@ public class ExamPaperController
         view.addObject("paperId", Integer.valueOf(paperId));
         return view;
     }
-    @RequestMapping(value={"admin/exampaper-preview/{paperId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value={"admin/exampaper-preview/{paperId}"}, method = RequestMethod.GET)
     public ModelAndView paperPreView(@PathVariable("paperId") int paperId) {
         ModelAndView view = new ModelAndView("admin/exampaper-preview");
         Exampaper exampaper = this.exampaperService.getPaperById(paperId);
@@ -96,22 +99,38 @@ public class ExamPaperController
         return view;
     }
     @ResponseBody
-    @RequestMapping(value={"admin/paper-delete"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
-    public String paperDelete(@RequestBody int pageId) throws JsonProcessingException { int num = this.exampaperService.deletePaper(pageId);
-        if (num != 1) {
+    @RequestMapping(value={"admin/paper-delete"}, method = RequestMethod.POST)
+    public String paperDelete(@RequestBody int paperId) throws JsonProcessingException {
+        Exampaper exampaper = exampaperService.getPaperById(paperId);
+        if ( exampaper == null ) {
+            return ReturnJacksonUtil.resultWithFailed(WebCodeEnum.NO_PAPER_ERROR);
+        }else if( exampaper.getStatus() != 0 ){
             return ReturnJacksonUtil.resultWithFailed(WebCodeEnum.DELETE_PAPER_ERROR);
+        }else{
+            exampaperService.deletePaper(paperId);
         }
-        return ReturnJacksonUtil.resultOk(); }
+        return ReturnJacksonUtil.resultOk();
+    }
+
     @ResponseBody
-    @RequestMapping(value={"admin/changePaperStatus"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    @RequestMapping(value={"admin/changePaperStatus"}, method = RequestMethod.POST)
     public String changePaperStatus(@RequestBody Map<String, String> map) throws JsonProcessingException {
-        int paperId = Integer.parseInt((String)map.get("pageId"));
-        int status = Integer.parseInt((String)map.get("status"));
+        int paperId = Integer.parseInt(map.get("pageId"));
+        int status = Integer.parseInt(map.get("status"));
         this.exampaperService.changePaperStatus(paperId, status);
         return ReturnJacksonUtil.resultOk();
     }
+
     @ResponseBody
-    @RequestMapping(value={"admin/add-paper-question/{paperId}"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    @RequestMapping(value = "admin/changePaperProperty",method = RequestMethod.POST)
+    public String changePaperProperty(@RequestBody Exampaper exampaper) throws JsonProcessingException {
+        exampaperService.changePaperProperty(exampaper);
+        return  ReturnJacksonUtil.resultOk();
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value={"admin/add-paper-question/{paperId}"}, method = RequestMethod.POST)
     public String addPaperQuestion(@RequestBody Integer[] ids, @PathVariable("paperId") int paperId) throws JsonProcessingException { Exampaper exampaper = this.exampaperService.getPaperById(paperId);
         String questionIds = exampaper.getQuestionIds();
         String content = exampaper.getContent();
@@ -143,15 +162,17 @@ public class ExamPaperController
             content = content + "#" + ExampaperUtil.questionListToXml(questionList);
         }
         this.exampaperService.changePaperContent(content, paperId);
-        return ReturnJacksonUtil.resultOk(); }
+        return ReturnJacksonUtil.resultOk();
+    }
+
     @ResponseBody
-    @RequestMapping(value={"admin/delete-paper-question"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    @RequestMapping(value={"admin/delete-paper-question"}, method = RequestMethod.POST)
     public String addPaperQuestion(@RequestBody Map<String, String> map) throws JsonProcessingException {
         int paperId = Integer.parseInt((String)map.get("paperId"));
         Exampaper exampaper = this.exampaperService.getPaperById(paperId);
         String questionIds = exampaper.getQuestionIds();
         String content = exampaper.getContent();
-        String questionId = (String)map.get("questionId");
+        String questionId = map.get("questionId");
         List questionList = ExampaperUtil.xmlToQuestionList(content);
         ListIterator questionListIterator = questionList.listIterator();
 
