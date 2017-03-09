@@ -84,7 +84,9 @@ public class CourseController
 
     @RequestMapping(value = "admin/course-upload-image",method = RequestMethod.POST)
     @ResponseBody
-    public void imageUpload(@RequestParam("upload") MultipartFile file,HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void imageUpload(@RequestParam("upload") MultipartFile file,
+                             @RequestParam("url") String url,
+                             HttpServletRequest request, HttpServletResponse response) throws IOException {
         String fileName = file.getOriginalFilename();
         response.reset();
         PrintWriter out = response.getWriter();
@@ -96,7 +98,9 @@ public class CourseController
         file.transferTo(targetFile);
         String callback = request.getParameter("CKEditorFuncNum");
         out.println("<script type=\"text/javascript\">");
-        out.println("window.parent.CKEDITOR.tools.callFunction("+ callback + ",'" +"resources/upload/course/"+ fileName + "','')");
+        out.println("window.parent.CKEDITOR.tools.callFunction("
+                + callback + ",'"
+                +url+"resources/upload/course/"+ fileName + "','')");
         out.println("</script>");
         out.flush();
         out.close();

@@ -221,7 +221,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<script type="text/javascript" src="resources/ckeditor/ckeditor.js"></script>
 	    <script type="text/javascript">
             var CKContent = CKEDITOR.replace("content",{
-                filebrowserImageUploadUrl : "admin/course-upload-image",
+                filebrowserImageUploadUrl : document.getElementsByTagName('base')[0].href+"admin/course-upload-image?url="+document.getElementsByTagName('base')[0].href,
 			});
 
 			function addCourse()  {
