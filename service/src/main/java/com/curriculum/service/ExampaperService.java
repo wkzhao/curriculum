@@ -12,17 +12,17 @@ import java.util.List;
 
    List<Exampaper> getSimplePapers();
 
-   int addPaper(Exampaper paramExampaper);
+   int addPaper(Exampaper exampaper);
 
-   Exampaper getPaperById(int paramInt);
+   Exampaper getPaperById(int id);
 
-   int deletePaper(int paramInt);
+   int deletePaper(int id);
 
-   int changePaperStatus(int paramInt1, int paramInt2);
+   int changePaperStatus(int id, int status);
 
-   int changePaperContent(String paramString, int paramInt);
+   int changePaperContent(String content, int id);
 
-   int changePaperQuestionIds(String paramString, int paramInt);
+   int changePaperQuestionIds(String questionIds, int id);
 
    int changePaperProperty(Exampaper exampaper);
 }

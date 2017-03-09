@@ -33,8 +33,13 @@ var examing = {
 	 * 开始倒计时
 	 */
 	startTimer : function startTimer() {
-		var timestamp = parseInt($("#exam-timestamp").text());
+        var timestamp ;
 		var int = setInterval(function() {
+            if( examing.getCookie("examTimeStamp") == "" ){
+                timestamp = parseInt($("#exam-timestamp").text());
+            }else{
+                timestamp = parseInt(examing.getCookie("examTimeStamp"));
+            }
 			$("#exam-timestamp").text(timestamp);
 			$("#exam-clock").text(examing.toHHMMSS(timestamp));
 			if(timestamp < 600){
@@ -42,12 +47,44 @@ var examing = {
 				exam_clock.removeClass("question-time-normal");
 				exam_clock.addClass("question-time-warning");
 			}
-			
-			timestamp-- || examing.examTimeOut(int); 
+
+            if(timestamp--){
+                examing.setCookie("examTimeStamp",timestamp);
+            }else {
+                examing.delCookie("examTimeStamp");
+                examing.examTimeOut(int);
+            }
 		}, 1000);
 	},
-	
-	/**
+
+   setCookie: function setCookie(name,value) {
+		var Days = 30;
+		var exp = new Date();
+		exp.setTime(exp.getTime() + Days*24*60*60*1000);
+		document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+	},
+
+   getCookie : function getCookie(cookieName) {
+		var strCookie = document.cookie;
+		var arrCookie = strCookie.split("; ");
+		for(var i = 0; i < arrCookie.length; i++){
+			var arr = arrCookie[i].split("=");
+			if(cookieName == arr[0]){
+				return arr[1];
+			}
+		}
+		return "";
+   },
+
+   delCookie: function delCookie(name) {
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    var cval=getCookie(name);
+    if(cval!=null)
+        document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+   },
+
+/**
 	 * 考试时间到
 	 * @param int
 	 */

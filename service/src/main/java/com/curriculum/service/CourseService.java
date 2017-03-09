@@ -5,11 +5,11 @@ import com.curriculum.domain.PageBean;
 import java.util.List;
 
  public interface CourseService {
-   int addCourse(Course paramCourse);
+   int addCourse(Course course);
 
-   List<Course> getCourseByPointId(int paramInt, PageBean paramPageBean);
+   List<Course> getCourseByPointId(int pointId, PageBean pageBean);
 
-   int getCountByPointId(int paramInt);
+   int getCountByPointId(int pointId);
 
-   Course getCourseById(int paramInt);
+   Course getCourseById(int id);
 }

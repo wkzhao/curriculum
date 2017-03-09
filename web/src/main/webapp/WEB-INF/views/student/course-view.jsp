@@ -1,47 +1,44 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: wenkun.zhao
-  Date: 2017/2/22
-  Time: 19:06
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+<%-- <%@taglib uri="spring.tld" prefix="spring"%> --%>
 <%
     String path = request.getContextPath();
-    String basePath = request.getScheme() + "://"
-            + request.getServerName() + ":" + request.getServerPort()
-            + path + "/";
+    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 
 <!DOCTYPE html>
 <html>
 <head>
     <base href="<%=basePath%>">
+
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Exam++ 没有权限</title>
-
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>课程学习</title>
     <meta name="keywords" content="">
     <link rel="shortcut icon" href="<%=basePath%>resources/images/favicon.ico" />
     <link href="resources/bootstrap/css/bootstrap-huan.css" rel="stylesheet">
     <link href="resources/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="resources/css/style.css" rel="stylesheet">
 
+    <link href="resources/css/exam.css" rel="stylesheet">
+    <link href="resources/chart/morris.css" rel="stylesheet">
 </head>
 <body>
 <header>
     <div class="container">
         <div class="row">
             <div class="col-xs-5">
-                <div class="logo">
-                    <h1><a href="#"><img alt="" src="resources/images/logo.png"></a></h1>
+                <div class="col-xs-5">
+                    <div class="logo">
+                        <h1><a href="#"><img alt="" src="resources/images/logo.png"></a></h1>
+                    </div>
                 </div>
             </div>
             <div class="col-xs-7" id="login-info">
-
                 <c:choose>
                     <c:when test="${not empty sessionScope.user.username}">
                         <div id="login-info-user">
@@ -56,7 +53,6 @@
                         <a class="btn btn-success" href="user-login">登录</a>
                     </c:otherwise>
                 </c:choose>
-
             </div>
         </div>
     </div>
@@ -73,7 +69,7 @@
                 <li>
                     <a href="start-exam"><i class="fa fa-edit"></i>试题练习</a>
                 </li>
-                <li>
+                <li class="active">
                     <a href="student/user-center"><i class="fa fa-dashboard"></i>会员中心</a>
                 </li>
                 <li>
@@ -84,6 +80,7 @@
     </div>
 </div>
 
+
 <!-- Navigation bar ends -->
 
 <!-- Slider starts -->
@@ -91,18 +88,25 @@
 <div>
     <!-- Slider (Flex Slider) -->
 
-    <div class="container" style="height:500px;margin-top: 50px;">
-        <h2>您没有权限访问此页面</h2>
-        <p class="big grey">
-            您的账号为<span>${user.username}</span>
-        </p>
-        <hr>
-        <div class="link-list">
-            <h5>您可以选择访问其他页面</h5>
-            <a href="#">主页</a><a href="#">试题练习</a><a href="#">练习历史</a><a href="#">联系我们</a><a href="#">FAQ</a>
-        </div>
-        <div class="row">
+    <div class="container" style="min-height:500px;">
 
+        <div class="row">
+            <div class="col-xs-9">
+                <div class="page-header">
+                    <h1><i class="fa fa-list-ul"></i> 课程学习 </h1>
+                </div>
+                <div class="page-content row">
+                    <div>
+                        <video  width="544" height="360" controls>
+                            <source  src="${course.videoUrl}" type="video/mp4"></source>
+                        </video>
+                    </div>
+                    <form >
+                        ${course.content}
+                    </form>
+
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -133,4 +137,3 @@
 
 </body>
 </html>
-

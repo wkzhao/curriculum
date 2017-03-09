@@ -130,8 +130,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 								<input type="hidden" id="examing-paper-id" value="${paperId }">
 								<ul id="exampaper-body">
-									<span>[单选题]</span>
 									<c:forEach items="${singleQuestions}" var="item">
+										<c:if test="${status.index == 0}">
+											<span>[单选题]</span>
+										</c:if>
 										<form class="question-body" name="${item.questionTypeId}">
 											<span class="question-id" style="display:none;">${item.id}</span>
 											<span class="question-id" style="display: none">${item.points}</span>
@@ -146,8 +148,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											</ul>
 										</form>
 									</c:forEach>
-									<span>[多选题]</span>
 									<c:forEach items="${multiQuestions}" var="item">
+										<c:if test="${status.index == 0}">
+											<span>[多选题]</span>
+										</c:if>
 										<form class="question-body" name="${item.questionTypeId}">
 											<span class="question-id" style="display:none;">${item.id}</span>
 											<span class="question-id" style="display: none">${item.points}</span>
@@ -162,8 +166,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											</ul>
 										</form>
 									</c:forEach>
-									<span>[判断题]</span>
 									<c:forEach items="${judgeQuestions}" var="item">
+										<c:if test="${status.index == 0}">
+											<span>[判断题]</span>
+										</c:if>
 										<form class="question-body" name="${item.questionTypeId}">
 											<span class="question-id" style="display:none;">${item.id}</span>
 											<span class="question-id" style="display: none">${item.points}</span>
@@ -180,8 +186,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											</ul>
 										</form>
 									</c:forEach>
-									<span>[主观题]</span>
 									<c:forEach items="${otherQuestions}" var="item">
+										<c:if test="${status.index == 0}">
+											<span>[主观题]</span>
+										</c:if>
 										<form class="question-body" name="${item.questionTypeId}">
 											<span class="question-id" style="display:none;">${item.id}</span>
 											<span class="question-id" style="display:none;">${item.points}</span>
@@ -204,7 +212,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="col-md-12">
 						<div class="copy">
 							<p>
-								Exam++ Copyright © <a href="http://www.examxx.net/" target="_blank">Exam++</a> - <a href="." target="_blank">主页</a> | <a href="http://www.examxx.net/" target="_blank">关于我们</a> | <a href="http://www.examxx.net/" target="_blank">FAQ</a> | <a href="http://www.examxx.net/" target="_blank">联系我们</a>
+								Exam++ Copyright © <a href="javascript:void(0)" target="_blank">Exam++</a> - <a href="." target="_blank">主页</a> | <a href="javascript:void(0)" target="_blank">关于我们</a> | <a href="javascript:void(0)" target="_blank">FAQ</a> | <a href="javascript:void(0)" target="_blank">联系我们</a>
 							</p>
 						</div>
 					</div>

@@ -7,7 +7,7 @@ public interface KnowledgeService
 {
    List<Knowledge> getAllKnowledge();
 
-   int addKnowledge(Knowledge paramKnowledge);
+   int addKnowledge(Knowledge knowledge);
 
    int changeProperty(Knowledge knowledge);
 }

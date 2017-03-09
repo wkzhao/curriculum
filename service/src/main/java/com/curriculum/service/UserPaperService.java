@@ -2,11 +2,14 @@ package com.curriculum.service;
 
 import com.curriculum.domain.UserPaper;
 import java.util.List;
+import java.util.Map;
 
 public interface UserPaperService {
-   List<UserPaper> getUserPaperByUserId(int paramInt);
+   List<UserPaper> getUserPaperByUserId(int userId);
 
-   int addUserPaper(int paramInt1, int paramInt2);
+   UserPaper getUserPaperByUserIdAndPaperId(int userId, int paperId);
 
-   int getCountByUserAndPaper(int paramInt1, int paramInt2);
+   int addUserPaper(int userId, int paperId,Map<String,String> questionIdAnswerMap);
+
+   int getCountByUserAndPaper(int userId, int paperId);
 }

@@ -27,10 +27,10 @@ public interface CourseDao {
    Course getCourseById(@Param("id") int id);
 
     @Select("<script>"
-            +" select count(*) "
+            +" select count(1) "
             +" from "+TABLE
             +" <if test = 'pointId != 0'>"
-            +" where point_id = #{pointId}"
+            +" where knowledge_point_id = #{pointId}"
             +"</if>"
             +"</script>"
     )

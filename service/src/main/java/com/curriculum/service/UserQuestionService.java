@@ -8,9 +8,9 @@ import java.util.Map;
 
 public interface UserQuestionService
 {
-   int addUserQuestions(User paramUser, Map<String, String> paramMap);
+   int addUserQuestions(User user, Map<String, String> questionIdAnswerMap);
 
-   List<Integer> getErrorQuestionIds(int paramInt, String paramString);
+   List<Integer> getErrorQuestionIds(int userId, String points);
 
-   List<Analysis> getAnalysisByPoints(int paramInt, List<KnowledgePoint> paramList);
+   List<Analysis> getAnalysisByPoints(int userId, List<KnowledgePoint> knowledgePointList);
 }

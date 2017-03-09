@@ -114,9 +114,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<li>
 							<a href="admin/knowledge-list"><i class="fa fa-cloud"></i>题库管理</a>
 						</li>
-						<li>
-							<a href="admin/sys-backup"><i class="fa fa-cogs"></i>网站设置</a>
-						</li>
+
 					</ul>
 				</nav>
 			</div>
@@ -166,8 +164,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										</div>
 										<div id="exampaper-desc-container">
 											<div id="exampaper-desc" class="exampaper-filter">
-												
-											
+												<div style="margin-top: 5px;">
+													<span id="add-more-qt-to-paper"><i class="small-icon fa fa-plus-square" title="添加选项"></i><span>增加更多题目</span></span>
+												</div>
 											</div>
 										</div>
 										
@@ -280,7 +279,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="col-md-12">
 						<div class="copy">
 							<p>
-								Exam++ Copyright © <a href="http://www.examxx.net/" target="_blank">Exam++</a> - <a href="." target="_blank">主页</a> | <a href="http://www.examxx.net/" target="_blank">关于我们</a> | <a href="http://www.examxx.net/" target="_blank">FAQ</a> | <a href="http://www.examxx.net/" target="_blank">联系我们</a>
+								Exam++ Copyright © <a href="javascript:void(0)" target="_blank">Exam++</a> - <a href="." target="_blank">主页</a> | <a href="javascript:void(0)" target="_blank">关于我们</a> | <a href="javascript:void(0)" target="_blank">FAQ</a> | <a href="javascript:void(0)" target="_blank">联系我们</a>
 							</p>
 						</div>
 					</div>

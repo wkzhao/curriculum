@@ -1,10 +1,14 @@
 package com.curriculum.domain;
 
+import java.util.Date;
+
 public class UserPaper
 {
     private int userId;
     private int paperId;
     private String paperName;
+    private String content;
+    private Date createTime;
 
     public int getUserId()
     {
@@ -29,5 +33,21 @@ public class UserPaper
 
     public void setPaperName(String paperName) {
         this.paperName = paperName;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

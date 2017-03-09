@@ -12,12 +12,7 @@ import com.curriculum.util.ExampaperUtil;
 import com.curriculum.util.ReturnJacksonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
+import java.util.*;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,7 +35,7 @@ public class ExamPaperController
         ModelAndView view = new ModelAndView("admin/exampaper-list");
         int recordCount = exampaperService.getPaperCount(status);
         PageBean pageBean = new PageBean(currentPage, Constants.PAGE_SIZE,recordCount);
-        List exampaperList = this.exampaperService.getExamPaperByPage(status,pageBean);
+        List exampaperList = exampaperService.getExamPaperByPage(status,pageBean);
         view.addObject("exampaperList", exampaperList);
         view.addObject("pageBean",pageBean);
         view.addObject("status",status);
@@ -53,15 +48,16 @@ public class ExamPaperController
     }
     @ResponseBody
     @RequestMapping(value={"admin/exampaper-add"}, method = RequestMethod.POST)
-    public String addPaper(@RequestBody Exampaper exampaper, HttpSession session) throws JsonProcessingException { exampaper.setCreator(((User)session.getAttribute("user")).getUsername());
-        this.exampaperService.addPaper(exampaper);
-        System.out.println(exampaper.getId());
-        return ReturnJacksonUtil.resultOk(); }
+    public String addPaper(@RequestBody Exampaper exampaper, HttpSession session) throws JsonProcessingException {
+        exampaper.setCreator(((User)session.getAttribute("user")).getUsername());
+        exampaperService.addPaper(exampaper);
+        return ReturnJacksonUtil.resultOk(exampaper, Locale.CHINA);
+    }
 
     @RequestMapping(value={"admin/exampaper-edit/{paperId}"}, method = RequestMethod.GET)
     public ModelAndView editPaper(@PathVariable("paperId") int paperId) {
         ModelAndView view = new ModelAndView("admin/exampaper-edit");
-        Exampaper exampaper = this.exampaperService.getPaperById(paperId);
+        Exampaper exampaper = exampaperService.getPaperById(paperId);
         Map map = ExampaperUtil.XmlToQuestionMap(exampaper.getContent());
         view.addObject("singleQuestions", map.get(Integer.valueOf(1)));
         view.addObject("multiQuestions", map.get(Integer.valueOf(2)));
@@ -81,7 +77,7 @@ public class ExamPaperController
     @RequestMapping(value={"admin/exampaper-preview/{paperId}"}, method = RequestMethod.GET)
     public ModelAndView paperPreView(@PathVariable("paperId") int paperId) {
         ModelAndView view = new ModelAndView("admin/exampaper-preview");
-        Exampaper exampaper = this.exampaperService.getPaperById(paperId);
+        Exampaper exampaper = exampaperService.getPaperById(paperId);
         Map map = ExampaperUtil.XmlToQuestionMap(exampaper.getContent());
         view.addObject("singleQuestions", map.get(Integer.valueOf(1)));
         view.addObject("multiQuestions", map.get(Integer.valueOf(2)));
@@ -115,9 +111,9 @@ public class ExamPaperController
     @ResponseBody
     @RequestMapping(value={"admin/changePaperStatus"}, method = RequestMethod.POST)
     public String changePaperStatus(@RequestBody Map<String, String> map) throws JsonProcessingException {
-        int paperId = Integer.parseInt(map.get("pageId"));
+        int paperId = Integer.parseInt(map.get("paperId"));
         int status = Integer.parseInt(map.get("status"));
-        this.exampaperService.changePaperStatus(paperId, status);
+        exampaperService.changePaperStatus(paperId, status);
         return ReturnJacksonUtil.resultOk();
     }
 
@@ -131,7 +127,7 @@ public class ExamPaperController
 
     @ResponseBody
     @RequestMapping(value={"admin/add-paper-question/{paperId}"}, method = RequestMethod.POST)
-    public String addPaperQuestion(@RequestBody Integer[] ids, @PathVariable("paperId") int paperId) throws JsonProcessingException { Exampaper exampaper = this.exampaperService.getPaperById(paperId);
+    public String addPaperQuestion(@RequestBody Integer[] ids, @PathVariable("paperId") int paperId) throws JsonProcessingException { Exampaper exampaper = exampaperService.getPaperById(paperId);
         String questionIds = exampaper.getQuestionIds();
         String content = exampaper.getContent();
         List<Integer> addQuestionIds = new ArrayList();
@@ -151,17 +147,17 @@ public class ExamPaperController
             questionIds = questionIds + "," + id;
         }
         questionIds = questionIds + ",";
-        this.exampaperService.changePaperQuestionIds(questionIds, paperId);
+        exampaperService.changePaperQuestionIds(questionIds, paperId);
         if ((addQuestionIds == null) || (addQuestionIds.size() == 0)) {
             return ReturnJacksonUtil.resultOk();
         }
-        List questionList = this.questionService.getQuestionByIds(addQuestionIds);
+        List questionList = questionService.getQuestionByIds(addQuestionIds);
         if ((content == null) || ("".equals(content)))
             content = ExampaperUtil.questionListToXml(questionList);
         else {
             content = content + "#" + ExampaperUtil.questionListToXml(questionList);
         }
-        this.exampaperService.changePaperContent(content, paperId);
+        exampaperService.changePaperContent(content, paperId);
         return ReturnJacksonUtil.resultOk();
     }
 
@@ -169,7 +165,7 @@ public class ExamPaperController
     @RequestMapping(value={"admin/delete-paper-question"}, method = RequestMethod.POST)
     public String addPaperQuestion(@RequestBody Map<String, String> map) throws JsonProcessingException {
         int paperId = Integer.parseInt((String)map.get("paperId"));
-        Exampaper exampaper = this.exampaperService.getPaperById(paperId);
+        Exampaper exampaper = exampaperService.getPaperById(paperId);
         String questionIds = exampaper.getQuestionIds();
         String content = exampaper.getContent();
         String questionId = map.get("questionId");
@@ -184,8 +180,8 @@ public class ExamPaperController
         }
         content = ExampaperUtil.questionListToXml(questionList);
         questionIds = questionIds.replace("," + questionId + ",", ",");
-        this.exampaperService.changePaperQuestionIds(questionIds, paperId);
-        this.exampaperService.changePaperContent(content, paperId);
+        exampaperService.changePaperQuestionIds(questionIds, paperId);
+        exampaperService.changePaperContent(content, paperId);
         return ReturnJacksonUtil.resultOk();
     }
 

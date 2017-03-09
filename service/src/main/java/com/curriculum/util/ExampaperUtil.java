@@ -2,11 +2,8 @@ package com.curriculum.util;
 
 import com.curriculum.domain.Question;
 import com.curriculum.domain.QuestionContent;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 public class ExampaperUtil
 {
@@ -14,6 +11,9 @@ public class ExampaperUtil
     {
         StringBuilder result = new StringBuilder("");
         for (Question question : questionList) {
+            if(question.getuAnswer() == null || "".equals(question.getuAnswer())) {
+                question.setuAnswer("noAnswer");
+            }
             result.append(new StringBuilder().append(Object2Xml.toXml(question)).append("#").toString());
         }
         return result.toString().substring(0, result.length() - 1);

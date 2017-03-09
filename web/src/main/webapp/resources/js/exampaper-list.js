@@ -41,8 +41,8 @@ var question_list = {
 	publishPaper : function publishPaper(){
 		var param = new Object();
 		$(".publish-paper").click(function(){
-			var paperId = $(this).parent().parent().find("input").val();
-            param.pageId = paperId;
+			var paperId = $(this).parent().parent().find(".td-paper-id").text();
+            param.paperId = paperId;
             param.status = 2;
 			if (confirm("确定上线吗？上线后的试卷将可以进行考试")) {
 				$.ajax({

@@ -10,9 +10,9 @@ public interface KnowledgePointService {
 
    int getPointCount(int knowledgeId);
 
-   List<KnowledgePoint> getPointsByKnowledgeId(int paramInt);
+   List<KnowledgePoint> getPointsByKnowledgeId(int knowledgeId);
 
-   int addPoint(KnowledgePoint paramKnowledgePoint);
+   int addPoint(KnowledgePoint knowledgePoint);
 
    int changeProperty(KnowledgePoint knowledgePoint);
 }

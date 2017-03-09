@@ -99,14 +99,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<a href="student/analysis/${sessionScope.user.id}"> <i class="fa fa-bar-chart-o"></i> 统计分析 </a>
 							</li>
 							<li class="active">
-								<a> <i class="fa fa-history"></i> 练习历史 </a>
+								<a> <i class="fa fa-history"></i> 考试历史 </a>
 							</li>
 						</ul>
 					</div>
 					</c:if>
 					<div class="col-xs-9">
 						<div class="page-header">
-							<h1><i class="fa fa-history"></i> 练习历史</h1>
+							<h1><i class="fa fa-history"></i> 考试历史</h1>
 						</div>
 						<div class="page-content row">
 							<div id="question-list">
@@ -117,16 +117,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach items="${exampaperList}" var="item">
+										<c:forEach items="${userPaperList}" var="item">
 											<tr>
 											
 												<td>
-													${item.name}
+													${item.paperName}
 												<td>
 													<fmt:formatDate value="${item.createTime }" pattern="yyyy-MM-dd"/>
 												</td>
 												<td>
-													<a href="student/exam-report/${item.id }" target="_blank" title="预览">查看报告</a></td>
+													<c:if test="${isAdmin}">
+														<a href="student/exam-report-${item.paperId}-${userId}?isAdmin=true">查看报告</a>
+													</c:if>
+													<c:if test="${!isAdmin}">
+													    <a href="student/exam-report-${item.paperId}-${sessionScope.user.id}">查看报告</a>
+													</c:if>
 												</td>
 											</tr>
 										</c:forEach>
@@ -151,7 +156,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="col-md-12">
 						<div class="copy">
 							<p>
-								Exam++ Copyright © <a href="http://www.examxx.net/" target="_blank">Exam++</a> - <a href="." target="_blank">主页</a> | <a href="http://www.examxx.net/" target="_blank">关于我们</a> | <a href="http://www.examxx.net/" target="_blank">FAQ</a> | <a href="http://www.examxx.net/" target="_blank">联系我们</a>
+								Exam++ Copyright © <a href="javascript:void(0)" target="_blank">Exam++</a> - <a href="." target="_blank">主页</a> | <a href="javascript:void(0)" target="_blank">关于我们</a> | <a href="javascript:void(0)" target="_blank">FAQ</a> | <a href="javascript:void(0)" target="_blank">联系我们</a>
 							</p>
 						</div>
 					</div>

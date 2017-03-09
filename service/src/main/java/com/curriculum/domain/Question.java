@@ -37,6 +37,11 @@ public class Question
     private String points;
     private String pointsName;
 
+    @XStreamAlias("uAnswer")
+    private String uAnswer;
+    @XStreamAlias("wrongOrRight")
+    private int wrongOrRight;
+
     public String getAnswer()
     {
         return this.answer;
@@ -127,5 +132,21 @@ public class Question
 
     public void setPointsName(String pointsName) {
         this.pointsName = pointsName;
+    }
+
+    public String getuAnswer() {
+        return uAnswer;
+    }
+
+    public void setuAnswer(String uAnswer) {
+        this.uAnswer = uAnswer;
+    }
+
+    public int getWrongOrRight() {
+        return wrongOrRight;
+    }
+
+    public void setWrongOrRight(int wrongOrRight) {
+        this.wrongOrRight = wrongOrRight;
     }
 }

@@ -28,10 +28,10 @@ exampaper_add = {
 						data : JSON.stringify(question_entity),
 						success : function(msg) {
 							if (msg.status.code == 0) {
-								alert("添加成功");
-//								document.location.href = document.getElementsByTagName('base')[0].href + 'admin/exampaper-edit/' + msg.data.paperId;
+								util.success("添加成功");
+								document.location.href = document.getElementsByTagName('base')[0].href + 'admin/exampaper-edit/' + msg.data.id;
 							} else {
-								alert("操作失败请稍后尝试");
+								alert("添加失败");
 								$(".df-submit").removeAttr("disabled");
 							}
 

@@ -11,19 +11,29 @@ public interface UserPaperDao
    String TABLE = "user_paper";
 
   @Select(""
-          +" select paper_id ,paper.name "
+          +" select paper_id ,paper.name as paper_name,user_paper.create_time "
           +" from "+TABLE+",paper"
           +" where user_id = #{userId} "
           +" and paper_id = paper.id "
   )
    List<UserPaper> getUserPaperByUserId(@Param("userId") int userId);
 
+    @Select(""
+            +" select paper_id ,paper.name as paper_name,user_paper.content,user_paper.create_time "
+            +" from "+TABLE+",paper"
+            +" where user_id = #{userId} "
+            +" and paper_id = paper.id "
+            +" and paper_id = #{paperId} "
+    )
+    UserPaper getUserPaperByUserIdAndPaperId(@Param("userId") int userId,@Param("paperId") int paperId);
+
+
   @Insert(""
           +" insert ignore into "
-          +TABLE+"(user_id,paper_id) "
-          +" values (#{userId},#{paperId}) "
+          +TABLE+"(user_id,paper_id,content) "
+          +" values (#{userId},#{paperId},#{content}) "
   )
-   int addUserPaper(@Param("userId") int userId, @Param("paperId") int paperId);
+   int addUserPaper(@Param("userId") int userId, @Param("paperId") int paperId,@Param("content") String content);
 
   @Select(""
           +" select count(1) "

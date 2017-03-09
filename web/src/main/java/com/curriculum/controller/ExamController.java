@@ -74,10 +74,11 @@ public class ExamController
     }
     @RequestMapping(value={"student/exam-finished"}, method = RequestMethod.POST)
     @ResponseBody
-    public String examFinished(@RequestBody Map<String, Object> map, HttpSession session) throws JsonProcessingException { int paperId = Integer.parseInt((String)map.get("paperId"));
-        Map questionIdAnswerMap = (Map)map.get("answer");
+    public String examFinished(@RequestBody Map<String, Object> map, HttpSession session) throws JsonProcessingException {
+        int paperId = Integer.parseInt((String)map.get("paperId"));
+        Map<String,String> questionIdAnswerMap = (Map)map.get("answer");
         User user = (User)session.getAttribute("user");
-        userPaperService.addUserPaper(user.getId(), paperId);
+        userPaperService.addUserPaper(user.getId(), paperId,questionIdAnswerMap);
         userQuestionService.addUserQuestions(user, questionIdAnswerMap);
         return ReturnJacksonUtil.resultOk();
     }

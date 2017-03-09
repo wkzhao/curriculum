@@ -6,17 +6,17 @@ import com.curriculum.domain.QuestionFilter;
 import java.util.List;
 
 public interface QuestionService {
-   int addQuestion(Question paramQuestion);
+   int addQuestion(Question question);
 
-   List<Question> getQuestionsByFilter(QuestionFilter paramQuestionFilter, PageBean paramPageBean);
+   List<Question> getQuestionsByFilter(QuestionFilter questionFilter, PageBean pageBean);
 
-   Question getQuestionById(int paramInt);
+   Question getQuestionById(int id);
 
-   int deleteQuestionById(int paramInt);
+   int deleteQuestionById(int id);
 
-   List<Question> getQuestionByIds(List<Integer> paramList);
+   List<Question> getQuestionByIds(List<Integer> ids);
 
-   String getQuestionAnswerById(int paramInt);
+   String getQuestionAnswerById(int id);
 
    int getQuestionCount();
 }

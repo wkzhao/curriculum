@@ -47,8 +47,14 @@ var examing = {
 	 * 开始倒计时
 	 */
 	startTimer : function startTimer() {
-		var timestamp = parseInt($("#exam-timestamp").text());
+        var cookies = document.cookie;
+		var timestamp ;
 		var int = setInterval(function() {
+            if( cookies == null ){
+                timestamp = parseInt($("#exam-timestamp").text());
+            }else{
+                timestamp = cookies.split(";")[0].split("=")[1];
+            }
 			$("#exam-timestamp").text(timestamp);
 			$("#exam-clock").text(examing.toHHMMSS(timestamp));
 			if(timestamp < 600){
@@ -57,7 +63,11 @@ var examing = {
 				exam_clock.addClass("question-time-warning");
 			}
 			
-			timestamp-- || examing.examTimeOut(int); 
+			if(timestamp--){
+                document.cookie="examTimeStamp="+timestamp;
+			}else {
+				examing.examTimeOut(int);
+			}
 		}, 1000);
 	},
 	
