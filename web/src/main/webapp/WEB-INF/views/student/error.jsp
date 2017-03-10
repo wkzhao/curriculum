@@ -21,7 +21,7 @@
     <base href="<%=basePath%>">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Exam++ 没有权限</title>
+    <title>Exam++ 出错了</title>
 
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="keywords" content="">
@@ -92,10 +92,7 @@
     <!-- Slider (Flex Slider) -->
 
     <div class="container" style="height:500px;margin-top: 50px;">
-        <h2>您没有权限访问此页面</h2>
-        <p class="big grey">
-            您的账号为<span>${user.username}</span>
-        </p>
+        <h2>出错了</h2>
         <hr>
         <div class="link-list">
             <h5>您可以选择访问其他页面</h5>

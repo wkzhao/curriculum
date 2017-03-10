@@ -6,8 +6,6 @@ import java.util.Map;
 public class Exampaper
 {
     private int id;
-    private int paperPoint;
-    private int passPoint;
     private int time;
     private int paperTypeId;
     private String name;
@@ -16,6 +14,8 @@ public class Exampaper
     private String creator;
     private Map<Integer, List<Question>> questionMap;
     private String questionIds;
+    private Map<Integer,Integer> questionTypeNumMap;
+    private List<Integer> knowledgePoints;
 
     public int getId()
     {
@@ -24,22 +24,6 @@ public class Exampaper
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getPaperPoint() {
-        return this.paperPoint;
-    }
-
-    public void setPaperPoint(int paperPoint) {
-        this.paperPoint = paperPoint;
-    }
-
-    public int getPassPoint() {
-        return this.passPoint;
-    }
-
-    public void setPassPoint(int passPoint) {
-        this.passPoint = passPoint;
     }
 
     public int getTime() {
@@ -104,5 +88,21 @@ public class Exampaper
 
     public void setQuestionIds(String questionIds) {
         this.questionIds = questionIds;
+    }
+
+    public Map<Integer, Integer> getQuestionTypeNumMap() {
+        return questionTypeNumMap;
+    }
+
+    public void setQuestionTypeNumMap(Map<Integer, Integer> questionTypeNumMap) {
+        this.questionTypeNumMap = questionTypeNumMap;
+    }
+
+    public List<Integer> getKnowledgePoints() {
+        return knowledgePoints;
+    }
+
+    public void setKnowledgePoints(List<Integer> knowledgePoints) {
+        this.knowledgePoints = knowledgePoints;
     }
 }

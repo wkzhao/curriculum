@@ -95,5 +95,18 @@ public interface QuestionDao
           +" </script>"
   )
    List<Question> getQuestionByIds(@Param("ids") List<Integer> ids);
+
+    @Select("<script> "
+            +" select  question.id,points,question.name,answer,content,analysis,creator,question_type_id,question_type.name as question_type_name "
+            +" from "+ TABLE+",question_type  "
+            +" where question_type_id = question_type.id  "
+            +" and "
+            +" <foreach item='item' index='index' collection='points' open='(' separator='or ' close=')'> "
+            +"  question.points like '%,${item},%' "
+            +" </foreach> "
+            +" </script>"
+    )
+    List<Question> getQuestionByKnowledgePoints(@Param("points") List<Integer> knowledgePointIds);
+
 }
 

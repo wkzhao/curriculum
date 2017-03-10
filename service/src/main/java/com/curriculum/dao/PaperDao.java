@@ -17,7 +17,7 @@ public interface PaperDao
 
 
     @Select(" <script> "
-            +" select id,name,paper_point,pass_point,time,creator,paper_type_id,status,question_ids  "
+            +" select id,name,time,creator,paper_type_id,status,question_ids  "
             +" from "+ TABLE
             +" <trim prefix=\"WHERE\" prefixoverride=\"AND |OR\"> "
             +" <if test=\"status != 0\"> status = #{status} </if> "
@@ -28,6 +28,7 @@ public interface PaperDao
             +" </script> "
     )
     List<Exampaper>  getExamPaperByPage(@Param("status") int status, @Param("pageBean") PageBean pageBean);
+
 
     @Select(" <script> "
             +" select count(1) "
@@ -40,7 +41,7 @@ public interface PaperDao
     int getPaperCount(@Param("status") int status);
 
   @Select(""
-          +" select id,name,paper_point,pass_point,time,content,creator,paper_type_id,status,question_ids "
+          +" select id,name,time,content,creator,paper_type_id,status,question_ids "
           +" from " +TABLE
           +" where id = #{id}"
   )
@@ -55,8 +56,8 @@ public interface PaperDao
 
   @Insert(""
           +" insert into "
-          +" paper (name,paper_point,pass_point,content,time,creator,paper_type_id) "
-          +" values (#{paper.name},#{paper.paperPoint},#{paper.passPoint},#{paper.content},#{paper.time},#{paper.creator},#{paper.paperTypeId})"
+          +" paper (name,content,time,creator,paper_type_id) "
+          +" values (#{paper.name},#{paper.content},#{paper.time},#{paper.creator},#{paper.paperTypeId})"
   )
   @Options(useGeneratedKeys=true, keyProperty="paper.id")
    int addPaper(@Param("paper") Exampaper exampaper);

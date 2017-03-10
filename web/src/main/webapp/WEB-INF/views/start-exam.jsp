@@ -94,7 +94,7 @@ String basePath = request.getScheme() + "://"
 							<c:when test="${not empty sessionScope.user.username}">
 								<div id="login-info-user">
 									
-									<a href="user-detail/${sessionScope.user.username}" id="system-info-account" target="_blank">${sessionScope.user.username}</a>
+									<a href="javascript:void(0)" >${sessionScope.user.username}</a>
 									<span>|</span>
 									<a href="user-logout"><i class="fa fa-sign-out"></i> 退出</a>
 								</div>
@@ -231,23 +231,7 @@ String basePath = request.getScheme() + "://"
 
 							</div>
 						</div>
-						<div class="select-test col-xs-6">
-							<div style="height: 100px;">
-								<div class="select-test-icon">
-									<i class="fa fa-superscript"></i>
-								</div>
-								<div class="select-test-content">
-									<h3 class="title">随机练习</h3>
-									<p>
 
-										根据你对考点的掌握程度智能出题，提升综合能力
-									</p>
-									<a class="btn btn-primary" href="student/practice-test"><i class="fa fa-arrow-right"></i>参加练习</a>
-								</div>
-								<!--//content-->
-
-							</div>
-						</div>
 						<div class="select-test col-xs-6">
 							<div style="height: 100px;">
 								<div class="select-test-icon">
@@ -256,7 +240,7 @@ String basePath = request.getScheme() + "://"
 								<div class="select-test-content">
 									<h3 class="title">模拟考试</h3>
 									<p>
-										根据最新大纲的考查要求为你自动生成的模拟卷
+										老师给你的模拟卷
 									</p>
 									<a class="btn btn-primary" data-toggle="modal" data-target=".practice-exampaper-modal"><i class="fa fa-arrow-right"></i>参加测验</a>
 									<div class="modal fade practice-exampaper-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">

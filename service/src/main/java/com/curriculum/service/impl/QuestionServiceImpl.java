@@ -37,10 +37,19 @@ public class QuestionServiceImpl
         return questionList == null ? Collections.emptyList() : questionList;
     }
 
+    @Override
+    public List<Question> getQuestionByKnowledgePoints(List<Integer> knowledgePointIds) {
+        List<Question> questionList = questionDao.getQuestionByKnowledgePoints(knowledgePointIds);
+        for(Question question :questionList){
+            question.setQuestionContent(Object2Xml.toBean(question.getContent(),QuestionContent.class));
+        }
+        return questionList == null ? Collections.emptyList() : questionList;
+    }
+
     public Question getQuestionById(int questionId)
     {
         Question question = this.questionDao.getQuestionById(questionId);
-        question.setQuestionContent((QuestionContent)Object2Xml.toBean(question.getContent(), QuestionContent.class));
+        question.setQuestionContent(Object2Xml.toBean(question.getContent(), QuestionContent.class));
         setPointsName(question);
         return question;
     }
@@ -73,7 +82,7 @@ public class QuestionServiceImpl
 
     private List<Question> setQuestionContent(List<Question> questionList) {
         for (Question question : questionList) {
-            question.setQuestionContent((QuestionContent)Object2Xml.toBean(question.getContent(), QuestionContent.class));
+            question.setQuestionContent(Object2Xml.toBean(question.getContent(), QuestionContent.class));
         }
         return questionList;
     }

@@ -71,7 +71,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<c:when test="${not empty sessionScope.user.username}">
 								<div id="login-info-user">
 									
-									<a href="user-detail/${sessionScope.user.username}" id="system-info-account" target="_blank">${sessionScope.user.username}</a>
+									<a href="javascript:void(0)" >${sessionScope.user.username}</a>
 									<span>|</span>
 									<a href="user-logout"><i class="fa fa-sign-out"></i> 退出</a>
 								</div>

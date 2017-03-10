@@ -78,6 +78,7 @@ var examing = {
 						data : JSON.stringify(values),
 						success:function(msg){
 							if(msg.status.code == 0){
+								checkboxs.removeAttr("checked");
 								util.success("添加成功");
 							}else{
 								util.error("操作失败")

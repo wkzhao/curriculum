@@ -51,7 +51,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<c:when test="${not empty sessionScope.user.username}">
 								<div id="login-info-user">
 									
-									<a href="user-detail/${sessionScope.user.username}" id="system-info-account" target="_blank">${sessionScope.user.username}</a>
+									<a href="javascript:void(0)" >${sessionScope.user.username}</a>
 									<span>|</span>
 									<a href="user-logout"><i class="fa fa-sign-out"></i> 退出</a>
 								</div>
@@ -126,25 +126,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<div class="form-line add-update-exampaper-creat-type">
 									<span class="form-label"><span class="warning-label">*</span>组卷方式：</span>
 									<select class="df-input-narrow">
-										<option value="2">自动组卷</option>
-										<option value="1">手动组卷</option>
+										<option value="1">自动组卷</option>
+										<option value="2">手动组卷</option>
 										
 									</select>
-									<span class="form-message"></span>
-								</div>
-								<div class="form-line add-update-exampaper-type">
-									<span class="form-label"><span class="warning-label">*</span>试卷类型：</span>
-									<select class="df-input-narrow">
-										<option value="3">专家试卷</option>
-										<option value="2" selected="selected">模拟考试</option>
-										<option value="1">随机试卷</option>
-										
-									</select>
-									<span class="form-message"></span>
-								</div>
-								<div class="form-line add-update-pass-point">
-									<span class="form-label"><span class="warning-label">*</span>及格分数：</span>
-									<input type="text" class="df-input-narrow">
 									<span class="form-message"></span>
 								</div>
 								<div class="form-line add-update-duration">
@@ -158,82 +143,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<legend>
 											选择题型分布
 										</legend>
-										<span class="add-ques-type">
-											<label >单选题</label>
-											<input type="hidden" class="ques-id" value="1">
+										<c:forEach items="${questionTypeList}" var="item">
+											<span class="add-ques-type">
+											<label >${item.name}</label>
+											<input type="hidden" class="ques-id" value="${item.id}">
 											<input type="text" class="df-input-narrow add-ques-amount">
 											<span>道</span>
-											<label >每道题</label>
-											<input type="text" class="df-input-narrow add-ques-score">
-											<span>分</span>
-										</span>
-										<br>
-										<span class="add-ques-type">
-											<label >多选题</label>
-											<input type="hidden" class="ques-id" value="2">
-											<input type="text" class="df-input-narrow add-ques-amount">
-											<span>道</span>
-											<label >每道题</label>
-											<input type="text" class="df-input-narrow add-ques-score">
-											<span>分</span>
-										</span>
-										<br>
-										<span class="add-ques-type">
-											<label >判断题</label>
-											<input type="hidden" class="ques-id" value="3">
-											<input type="text" class="df-input-narrow add-ques-amount">
-											<span>道</span>
-											<label >每道题</label>
-											<input type="text" class="df-input-narrow add-ques-score">
-											<span>分</span>
-										</span>
-										<br>
-										<span class="add-ques-type">
-											<label >填空题</label>
-											<input type="hidden" class="ques-id" value="4">
-											<input type="text" class="df-input-narrow add-ques-amount">
-											<span>道</span>
-											<label >每道题</label>
-											<input type="text" class="df-input-narrow add-ques-score">
-											<span>分</span>
-										</span>
-										<br>
-										<span class="add-ques-type">
-											<label >简答题</label>
-											<input type="hidden" class="ques-id" value="5">
-											<input type="text" class="df-input-narrow add-ques-amount">
-											<span>道</span>
-											<label >每道题</label>
-											<input type="text" class="df-input-narrow add-ques-score">
-											<span>分</span>
-										</span>
-										<br>
-										<span class="add-ques-type">
-											<label >论述题</label>
-											<input type="hidden" class="ques-id" value="6">
-											<input type="text" class="df-input-narrow add-ques-amount">
-											<span>道</span>
-											<label >每道题</label>
-											<input type="text" class="df-input-narrow add-ques-score">
-											<span>分</span>
-										</span>
-										<br>
-										<span class="add-ques-type">
-											<label >分析题</label>
-											<input type="hidden" class="ques-id" value="7">
-											<input type="text" class="df-input-narrow add-ques-amount">
-											<span>道</span>
-											<label >每道题</label>
-											<input type="text" class="df-input-narrow add-ques-score">
-											<span>分</span>
-										</span>
-										<br>
+										    </span>
+											<br>
+										</c:forEach>
 									</fieldset>
-									<span class="form-message"></span>
-								</div>
-								<div class="form-line add-total-point">
-									<span class="form-label"><span class="warning-label">*</span>总分：</span>
-									<input id="total-point" type="text" class="df-input-narrow" disabled="disbaled">
 									<span class="form-message"></span>
 								</div>
 								<div class="form-line add-update-exampaper-scope" style="display: block;">
@@ -246,8 +165,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<div class="clearfix">
 											<div id="aq-course1" style="padding:0px;float:left; width:48%;">
 												<select id="field-select" class="df-input-narrow" size="4" style="width:100%;">
-													<c:forEach items="${fieldList }" var="item">
-														<option value="${item.fieldId }">${item.fieldName }</option>
+													<c:forEach items="${knowledgeList }" var="item">
+														<option value="${item.id }">${item.name }</option>
 													</c:forEach>
 												</select>
 											</div>

@@ -3,11 +3,15 @@ package com.curriculum.controller;
 import com.curriculum.constant.Constants;
 import com.curriculum.constant.WebCodeEnum;
 import com.curriculum.domain.Exampaper;
+import com.curriculum.domain.Knowledge;
 import com.curriculum.domain.PageBean;
 import com.curriculum.domain.Question;
+import com.curriculum.domain.QuestionType;
 import com.curriculum.domain.User;
 import com.curriculum.service.impl.ExampaperServiceImpl;
+import com.curriculum.service.impl.KnowledgeServiceImpl;
 import com.curriculum.service.impl.QuestionServiceImpl;
+import com.curriculum.service.impl.QuestionTypeServiceImpl;
 import com.curriculum.util.ExampaperUtil;
 import com.curriculum.util.ReturnJacksonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -29,6 +33,12 @@ public class ExamPaperController
     @Autowired
     QuestionServiceImpl questionService;
 
+    @Autowired
+    KnowledgeServiceImpl knowledgeService;
+
+    @Autowired
+    QuestionTypeServiceImpl questionTypeService;
+
     @RequestMapping(value={"admin/exampaper-list-{paperStatus}-{currentPage}"}, method = RequestMethod.GET)
     public ModelAndView toPaperList(@PathVariable("paperStatus") int status,@PathVariable("currentPage") int currentPage)
     {
@@ -44,14 +54,21 @@ public class ExamPaperController
     @RequestMapping(value={"admin/exampaper-add"}, method = RequestMethod.GET)
     public ModelAndView toAddPaperPage() {
         ModelAndView view = new ModelAndView("admin/exampaper-add");
+        List<Knowledge> knowledgeList = knowledgeService.getAllKnowledge();
+        view.addObject("knowledgeList",knowledgeList);
+        List<QuestionType> questionTypeList = questionTypeService.getAllTypes();
+        view.addObject("questionTypeList",questionTypeList);
         return view;
     }
     @ResponseBody
     @RequestMapping(value={"admin/exampaper-add"}, method = RequestMethod.POST)
     public String addPaper(@RequestBody Exampaper exampaper, HttpSession session) throws JsonProcessingException {
         exampaper.setCreator(((User)session.getAttribute("user")).getUsername());
+        if( exampaper.getPaperTypeId() == 1 ){
+            exampaper = exampaperService.createExamPaper(exampaper);
+        }
         exampaperService.addPaper(exampaper);
-        return ReturnJacksonUtil.resultOk(exampaper, Locale.CHINA);
+        return ReturnJacksonUtil.resultOk(exampaper.getId(), Locale.CHINA);
     }
 
     @RequestMapping(value={"admin/exampaper-edit/{paperId}"}, method = RequestMethod.GET)

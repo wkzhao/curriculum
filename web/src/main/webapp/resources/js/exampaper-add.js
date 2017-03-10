@@ -5,7 +5,6 @@ $(function() {
 exampaper_add = {
 		initial : function initial() {
 			this.bindAddPoint();
-			this.bindChangeAmount();
 			this.bindChangeCreatExamPaperType();
 			this.bindSubmit();
 		},
@@ -29,7 +28,7 @@ exampaper_add = {
 						success : function(msg) {
 							if (msg.status.code == 0) {
 								util.success("添加成功");
-								document.location.href = document.getElementsByTagName('base')[0].href + 'admin/exampaper-edit/' + msg.data.id;
+								document.location.href = document.getElementsByTagName('base')[0].href + 'admin/exampaper-edit/' + msg.data;
 							} else {
 								alert("添加失败");
 								$(".df-submit").removeAttr("disabled");
@@ -86,34 +85,7 @@ exampaper_add = {
 
 			return true;
 		},
-		
-		calculateTotalPoints : function(){
-			var qt = $(".add-ques-type");
-			var amount = 0;
-			for(var i = 0 ; i< qt.length;i++){
-				var itemamount = parseInt($(qt[i]).find(".add-ques-amount").val());
-				var itemscore = parseFloat($(qt[i]).find(".add-ques-score").val());
-				
-				if(isNaN(itemamount)||isNaN(itemscore)){
-					continue;
-				}else{
-					amount = amount +  itemamount * itemscore * 10;
-				}
-				
-			}
-			$(".add-total-point input").val(amount / 10);
-			
-			
-		},
-		
-		bindChangeAmount : function(){
-			$(".add-ques-amount").change(function(){
-				exampaper_add.calculateTotalPoints();
-			});
-			$(".add-ques-score").change(function(){
-				exampaper_add.calculateTotalPoints();
-			});
-		},
+
 		/**
 		 *组卷方式切换
 		 */
@@ -141,18 +113,16 @@ exampaper_add = {
 			$(".has-error").removeClass("has-error");
 			var result = true;
 			var r_checkName = exampaper_add.checkName();
-			var r_checkTotalPoint = exampaper_add.checkTotalPoint();
-			var r_checkPassPoint = exampaper_add.checkPassPoint();
 			var r_checkDuration = exampaper_add.checkDuration();
 			var r_checkKnowledge = exampaper_add.checkKnowledge();
 			
-			if($(".add-update-exampaper-creat-type select").val() == 2){
-				result = r_checkName && r_checkTotalPoint && r_checkPassPoint && r_checkDuration && r_checkKnowledge;
+			if($(".add-update-exampaper-creat-type select").val() == 1){
+				result = r_checkName && r_checkDuration && r_checkKnowledge;
 			}else{
-				result = r_checkName && r_checkPassPoint && r_checkDuration;
+				result = r_checkName  && r_checkDuration;
 			}
 
-            result = r_checkName && r_checkPassPoint && r_checkDuration; //
+            result = r_checkName  && r_checkDuration; //
 			
 			return result;
 		},
@@ -174,17 +144,7 @@ exampaper_add = {
 			}
 		},
 		
-		checkTotalPoint : function checkTotalPoint(){
-			var totall_point = $(".add-total-point input").val();
-			if(exampaper_add.getType(totall_point)=="float"){
-				$(".add-total-point .form-message").text("总分不能有小数");
-				return false;
-			}else if(isNaN(parseInt(totall_point))){
-				$(".add-total-point .form-message").text("无效的值");
-				return false;
-			}
-			return true;
-		},
+
 		checkDuration : function checkDuration() {
 			var duration = $(".add-update-duration input").val();
 			if (duration == "") {
@@ -200,22 +160,7 @@ exampaper_add = {
 				return true;
 			}
 		},
-		checkPassPoint : function checkPassPoint() {
-			var totall_point = parseInt($(".add-total-point input").val());
-			var point = parseInt($(".add-update-pass-point input").val());
-			if (point == "") {
-				$(".add-update-pass-point .form-message").text("请输入及格分数");
-				return false;
-			} else if (isNaN(point)) {
-				$(".add-update-pass-point .form-message").text("请输入数字");
-				return false;
-			} else if (point > totall_point) {
-				$(".add-update-pass-point .form-message").text("及格分数必须小于或等于总分数");
-				return false;
-			} else {
-				return true;
-			}
-		},
+
 		
 		checkKnowledge : function checkKnowledge(){
 			var result = true;
@@ -237,43 +182,26 @@ exampaper_add = {
 		composeEntity : function composeEntity(){
 			var paperParam = new Object();
 			paperParam.name = $(".add-update-exampapername input").val();
-			paperParam.passPoint = parseInt($(".add-update-pass-point input").val());
 			paperParam.time = $(".add-update-duration input").val();
-			paperParam.paperPoint = $("#total-point").val();
-			paperParam.paperTypeId = $(".add-update-exampaper-type select").val();
-			
+			paperParam.paperTypeId = $(".add-update-exampaper-creat-type select").val();
 			var qt = $(".add-ques-type");
 			var amountMap = new Object();
-			var pointMap = new Object();
+			var knowledgePoints = new Array();
 			for(var i = 0 ; i< qt.length;i++){
 				var itemamount = parseInt($(qt[i]).find(".add-ques-amount").val());
-				var itemscore = parseFloat($(qt[i]).find(".add-ques-score").val());
 				var itemsid = $(qt[i]).find(".ques-id").val();
-				if(isNaN(itemamount)||isNaN(itemscore)){
+				if(isNaN(itemamount)){
 					continue;
 				}else{
 					amountMap[itemsid] = itemamount;
-					pointMap[itemsid] = itemscore;
 				}
 			}
-			if($(".add-update-exampaper-creat-type select").val() == 2){
-				paperParam.questionTypeNum = amountMap;
-				paperParam.questionTypePoint = pointMap;
-				paperParam.paperPoint = $("#total-point").val();
-			}else{
-				paperParam.paperPoint = "100";
-			}
-			
-			
-			
-			var knowledges = $("#point-to-select option");
-			var rateMap = new Object();
-			knowledges.each(function(){
-				rateMap[$(this).val()] = 0;
-			});
-			
-//			paperParam.questionKnowledgePointRate = rateMap;
-			
+			var points = $("#point-to-select option");
+			for( var i = 0 ; i < points.length ; i++) {
+                knowledgePoints[i] = $(points[i]).val();
+            }
+            paperParam.knowledgePoints = knowledgePoints;
+            paperParam.questionTypeNumMap = amountMap;
 			return paperParam;
 		},
 		

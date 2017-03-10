@@ -4,9 +4,12 @@ import com.curriculum.domain.Exampaper;
 import com.curriculum.domain.PageBean;
 
 import java.util.List;
+import java.util.Map;
 
- public interface ExampaperService {
+public interface ExampaperService {
    List<Exampaper>  getExamPaperByPage(int status, PageBean pageBean);
+
+   Exampaper createExamPaper(Exampaper exampaper);
 
    int getPaperCount(int status);
 

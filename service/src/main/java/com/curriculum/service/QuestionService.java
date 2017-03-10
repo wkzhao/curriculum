@@ -10,6 +10,8 @@ public interface QuestionService {
 
    List<Question> getQuestionsByFilter(QuestionFilter questionFilter, PageBean pageBean);
 
+   List<Question> getQuestionByKnowledgePoints( List<Integer> knowledgePointIds);
+
    Question getQuestionById(int id);
 
    int deleteQuestionById(int id);
