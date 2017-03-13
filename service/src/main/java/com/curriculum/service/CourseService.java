@@ -12,4 +12,6 @@ import java.util.List;
    int getCountByPointId(int pointId);
 
    Course getCourseById(int id);
+
+   int changeCourseInfo(Course course);
 }

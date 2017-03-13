@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 public interface CourseDao {
    String TABLE = "course";
@@ -44,4 +45,11 @@ public interface CourseDao {
           +" </script> "
   )
    List<Course> getCourseByPointId(@Param("pointId") int pointId, @Param("pageBean") PageBean pageBean);
+
+  @Update(""
+          +" update " +TABLE
+          +" set title = #{course.title}, knowledge_point_id = #{course.knowledgePointId} "
+          +" where id = #{course.id} "
+  )
+  int changeCourseInfo(@Param("course") Course course);
 }

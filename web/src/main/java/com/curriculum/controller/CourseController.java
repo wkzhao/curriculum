@@ -1,6 +1,8 @@
 package com.curriculum.controller;
 
+import com.curriculum.constant.WebCodeEnum;
 import com.curriculum.domain.Course;
+import com.curriculum.domain.KnowledgePoint;
 import com.curriculum.domain.PageBean;
 import com.curriculum.domain.User;
 import com.curriculum.interceptor.annotation.LoginRequired;
@@ -35,16 +37,18 @@ public class CourseController
     @Autowired
     KnowledgePointServiceImpl knowledgePointService;
 
-    @RequestMapping(value={"admin/course-list/{currentPage}"}, method = RequestMethod.GET)
-    public ModelAndView getCourseList(@RequestParam(value="pointId", required=false) String pointIdString, @PathVariable("currentPage") int currentPage)
+    @RequestMapping(value={"admin/course-list-{knowledgePointId}-{currentPage}"}, method = RequestMethod.GET)
+    public ModelAndView getCourseList(@PathVariable("knowledgePointId") int knowledgePointId, @PathVariable("currentPage") int currentPage)
     {
         ModelAndView view = new ModelAndView("admin/course-list");
-        int pointId = pointIdString == null ? 0 : Integer.parseInt(pointIdString);
-        int count = courseService.getCountByPointId(pointId);
+        int count = courseService.getCountByPointId(knowledgePointId);
         PageBean pageBean = new PageBean(currentPage, 10, count);
-        List courseList = courseService.getCourseByPointId(pointId, pageBean);
+        List courseList = courseService.getCourseByPointId(knowledgePointId, pageBean);
         view.addObject("courseList", courseList);
+        List<KnowledgePoint> knowledgePointList = knowledgePointService.getPointsByPage(0,null);
+        view.addObject("knowledgePointList",knowledgePointList);
         view.addObject("pageBean", pageBean);
+        view.addObject("knowledgePointId",knowledgePointId);
         return view;
     }
 
@@ -69,6 +73,25 @@ public class CourseController
         view.addObject("course", course);
         return view;
     }
+
+    @RequestMapping(value={"admin/course-preview/{courseId}"}, method = RequestMethod.POST)
+    @ResponseBody
+    public String getCourseById(@PathVariable("courseId") int courseId) throws JsonProcessingException {
+        Course course = courseService.getCourseById(courseId);
+        return ReturnJacksonUtil.resultOk(course,Locale.CHINA);
+    }
+
+    @RequestMapping(value={"admin/changeCourseInfo"}, method = RequestMethod.POST)
+    @ResponseBody
+    public String changeCourseInfo(@RequestBody Course course) throws JsonProcessingException {
+        int result = courseService.changeCourseInfo(course);
+        if( result != 1 ){
+            return ReturnJacksonUtil.resultWithFailed(WebCodeEnum.UNKNOWN_ERROR);
+        }
+        return ReturnJacksonUtil.resultOk();
+    }
+
+
     @RequestMapping(value={"admin/course-upload-video"}, method = RequestMethod.POST)
     @ResponseBody
     public String videoUpload(@RequestParam("upload") MultipartFile file, HttpServletRequest request ) throws IOException {

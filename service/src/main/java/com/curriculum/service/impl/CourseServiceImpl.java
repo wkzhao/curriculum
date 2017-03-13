@@ -46,4 +46,9 @@ public class CourseServiceImpl
         }
         return null;
     }
+
+    @Override
+    public int changeCourseInfo(Course course) {
+        return courseDao.changeCourseInfo(course);
+    }
 }

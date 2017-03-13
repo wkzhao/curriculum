@@ -2,8 +2,11 @@ package com.curriculum.controller;
 
 import com.curriculum.constant.Constants;
 import com.curriculum.domain.Course;
+import com.curriculum.domain.KnowledgePoint;
 import com.curriculum.domain.PageBean;
 import com.curriculum.service.impl.CourseServiceImpl;
+import com.curriculum.service.impl.KnowledgePointServiceImpl;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +22,9 @@ public class StudentCourseController {
     @Autowired
     CourseServiceImpl courseService;
 
+    @Autowired
+    KnowledgePointServiceImpl knowledgePointService;
+
     @RequestMapping(value = "student/course-list-{knowledgePointId}-{currentPage}",method = RequestMethod.GET)
     public ModelAndView courseList(@PathVariable("knowledgePointId") int knowledgePointId,@PathVariable("currentPage") int currentPage){
         ModelAndView view = new ModelAndView("student/course-list");
@@ -26,7 +32,10 @@ public class StudentCourseController {
         PageBean pageBean = new PageBean(currentPage, Constants.PAGE_SIZE,count);
         List<Course> courseList = courseService.getCourseByPointId(knowledgePointId,pageBean);
         view.addObject("courseList",courseList);
+        List<KnowledgePoint> knowledgePointList = knowledgePointService.getPointsByPage(0,null);
+        view.addObject("knowledgePointList",knowledgePointList);
         view.addObject("pageBean",pageBean);
+        view.addObject("knowledgePointId",knowledgePointId);
         return  view;
     }
 

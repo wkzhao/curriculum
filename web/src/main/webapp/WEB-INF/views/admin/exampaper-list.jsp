@@ -82,7 +82,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<a href="admin/user-list/1"><i class="fa fa-user"></i>学生管理</a>
 						</li>
 						<li>
-							<a href="admin/knowledge-list"><i class="fa fa-cloud"></i>题库管理</a>
+							<a href="admin/knowledge-list"><i class="fa fa-cloud"></i>课程管理</a>
 						</li>
 
 					</ul>

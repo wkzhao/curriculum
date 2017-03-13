@@ -65,7 +65,7 @@ String basePath = request.getScheme() + "://"
 				role="navigation">
 					<ul class="nav navbar-nav">
 						<li>
-							<a href="home"><i class="fa fa-home"></i>主页</a>
+							<a href="home"><i class="fa fa-home"></i>课程学习</a>
 						</li>
 						<li>
 							<a href="start-exam"><i class="fa fa-edit"></i>试题练习</a>

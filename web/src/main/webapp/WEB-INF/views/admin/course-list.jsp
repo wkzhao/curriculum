@@ -29,6 +29,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<link href="resources/chart/morris.css" rel="stylesheet">
 	</head>
 	<body>
+	    <input type="hidden" value="true" class="isAdmin">
 		<header>
 			<div class="container">
 				<div class="row">
@@ -79,7 +80,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<a href="admin/user-list/1"><i class="fa fa-user"></i>学生管理</a>
 						</li>
 						<li class="active">
-							<a><i class="fa fa-cloud"></i>题库管理</a>
+							<a><i class="fa fa-cloud"></i>课程管理</a>
 						</li>
 
 					</ul>
@@ -165,10 +166,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<ul class="pagination pagination-sm">
 									<c:forEach  varStatus="status" begin="${pageBean.beginPageIndex }"  end="${pageBean.endPageIndex}">
 										<c:if test="${status.index+pageBean.beginPageIndex-1 == pageBean.currentPage }">
-											<li><a disabled="disabled" href="javascript:void(0)">${status.index+pageBean.beginPageIndex-1 }</a></li>
+											<li><a href="javascript:void(0)" class="label label-info">${status.index+pageBean.beginPageIndex-1 }</a></li>
 										</c:if>
 										<c:if test="${status.index+pageBean.beginPageIndex-1 != pageBean.currentPage }">
-											<li><a href="admin/course-list/${status.index+pageBean.beginPageIndex-1 }" >${status.index+pageBean.beginPageIndex-1 }</a></li>
+											<li><a href="javascript:void(0)" data-id="${status.index+pageBean.beginPageIndex-1 }">${status.index+pageBean.beginPageIndex-1 }</a></li>
 										</c:if>
 									</c:forEach>
 									</ul>
@@ -195,12 +196,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 														<input type="checkbox" value="${item.tagId }">
 													</c:if> --%>
 												</td>
-												<td>${item.id }</td>
+												<td><span class="course_id">${item.id }</span></td>
 												<td><a href="admin/course-preview/${item.id}">${item.title }</a></td>
 												<td>${item.knowledgePointName }</td>
 												<td>${item.creator }</td>
 												<td><fmt:formatDate value="${item.createTime }" pattern="yyyy-MM-dd"/></td>
-												<td><a href="admin/change-course">修改</a></td>
+												<td><a href="javascript:void(0)" onclick="preModifyCourse(this)">修改</a></td>
 												<td>
 													<%-- <c:if test="${item.removeable }">
 														<button class="delete-btn" data-id="${item.pointId }">删除</button>
@@ -216,16 +217,50 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<ul class="pagination pagination-sm">
 								<c:forEach  varStatus="status" begin="${pageBean.beginPageIndex }"  end="${pageBean.endPageIndex}">
 									<c:if test="${status.index+pageBean.beginPageIndex-1 == pageBean.currentPage }">
-										<li><a disabled="disabled" href="javascript:void(0)">${status.index+pageBean.beginPageIndex-1 }</a></li>
+										<li><a href="javascript:void(0)" class="label label-info">${status.index+pageBean.beginPageIndex-1 }</a></li>
 									</c:if>
 									<c:if test="${status.index+pageBean.beginPageIndex-1 != pageBean.currentPage }">
-										<li><a href="admin/course-list/${status.index+pageBean.beginPageIndex-1 }" >${status.index+pageBean.beginPageIndex-1 }</a></li>
+										<li><a href="javascript:void(0)" data-id="${status.index+pageBean.beginPageIndex-1 }">${status.index+pageBean.beginPageIndex-1 }</a></li>
 									</c:if>
 								</c:forEach>
 								</ul>
 							</div>
 
 						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="change-course-property-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h6 class="modal-title" id="myModalLabel">修改课程内容</h6>
+					</div>
+					<div class="modal-body">
+						<form >
+							<span id="add-update-course-id" style="display:none;"></span>
+							<div class="form-line add-update-course-title">
+								<span class="form-label"><span class="warning-label">*</span>课程标题：</span>
+								<input type="text" class="df-input-narrow" >
+								<span class="form-message"></span>
+							</div>
+							<div class="form-line add-update-course-point">
+								<span class="form-label"><span class="warning-label">*</span>知识点：</span>
+								<select name="knowledgePointId">
+									<c:forEach items="${knowledgePointList }" var="item">
+										<option value="${item.id}">${item.name}</option>
+									</c:forEach>
+								</select>
+								<span class="form-message"></span>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭窗口</button>
+						<button id="update-course-btn" type="button" class="btn btn-primary" onclick="modifyCourse()">确定修改</button>
 					</div>
 				</div>
 			</div>
@@ -255,6 +290,62 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<!-- Bootstrap JS -->
 		<script type="text/javascript" src="resources/bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="resources/js/all.js"></script>
-		
+		<script type="text/javascript" src="resources/js/course-list.js"></script>
+		<script type="text/javascript">
+			function preModifyCourse( obj ) {
+                $("#change-course-property-modal").modal({backdrop:true,keyboard:true});
+				var courseId = $(obj).parent().parent().find(".course_id").text();
+				$.ajax({
+                           headers : {
+                               'Accept' : 'application/json',
+                               'Content-Type' : 'application/json'
+                           },
+                           async:false,
+                           type : "POST",
+                           url : "admin/course-preview/"+courseId,
+                           success : function(msg) {
+                               if (msg.status.code == 0) {
+                                   var course = msg.data;
+                                   $("#add-update-course-id").text(course.id);
+                                   $(".add-update-course-title input").val(course.title);
+                                   $(".add-update-course-point select").val(course.knowledgePointId);
+                               } else {
+                                   util.error("操作失败请稍后尝试");
+                               }
+                           },
+                           error : function(jqXHR, textStatus) {
+                               util.error("操作失败请稍后尝试");
+                           }
+					   })
+            }
+            
+            function modifyCourse() {
+				var course = new Object();
+				course.id = $("#add-update-course-id").text();
+				course.title = $(".add-update-course-title input").val();
+				course.knowledgePointId = $(".add-update-course-point select").val();
+                $.ajax({
+                           headers : {
+                               'Accept' : 'application/json',
+                               'Content-Type' : 'application/json'
+                           },
+                           async:false,
+                           type : "POST",
+                           url : "admin/changeCourseInfo",
+                           data : JSON.stringify(course),
+                           success : function(msg) {
+                               if (msg.status.code == 0) {
+                                   util.success("修改成功");
+                                   window.location.reload();
+                               } else {
+                                   util.error("操作失败请稍后尝试");
+                               }
+                           },
+                           error : function(jqXHR, textStatus) {
+                               util.error("操作失败请稍后尝试");
+                           }
+                       })
+            }
+		</script>
 	</body>
 </html>

@@ -79,7 +79,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<a href="admin/user-list/1"><i class="fa fa-user"></i>学生管理</a>
 						</li>
 						<li class="active">
-							<a><i class="fa fa-cloud"></i>题库管理</a>
+							<a><i class="fa fa-cloud"></i>课程管理</a>
 						</li>
 					</ul>
 				</nav>
@@ -115,7 +115,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<a href="admin/add-point"> <i class="fa fa-pencil"></i> 添加知识点 </a>
 							</li>
 							<li>
-								<a href="admin/course-list/1"> <i class="fa fa-tag"></i> 课程列表 </a>
+								<a href="admin/course-list-0-1"> <i class="fa fa-tag"></i> 课程列表 </a>
 							</li>
 								
 							<li class="active">

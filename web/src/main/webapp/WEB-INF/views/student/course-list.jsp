@@ -65,7 +65,7 @@
         <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
             <ul class="nav navbar-nav">
                 <li class="active">
-                    <a href="home"><i class="fa fa-home"></i>主页</a>
+                    <a href="home"><i class="fa fa-home"></i>课程学习</a>
                 </li>
                 <li>
                     <a href="start-exam"><i class="fa fa-edit"></i>试题练习</a>
@@ -96,6 +96,49 @@
                     <h1> <i class="fa fa-bar-chart-o"></i> 课程列表 </h1>
                 </div>
                 <div class="page-content row">
+                    <div id="question-filter">
+                        <dl id="question-filter-field">
+                            <dt>
+                                知识点：
+                            </dt>
+                            <dd>
+                                <c:choose>
+                                    <c:when test="${knowledgePointId == 0 }">
+                                        <span data-id="0" class="label label-info">全部</span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span data-id="0">全部</span>
+                                    </c:otherwise>
+                                </c:choose>
+
+
+                                <c:forEach items="${knowledgePointList }" var="item">
+
+                                    <c:choose>
+                                        <c:when test="${knowledgePointId == item.id }">
+                                            <span data-id="${item.id}" class="label label-info">${item.name}</span>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span data-id="${item.id }">${item.name }</span>
+                                        </c:otherwise>
+                                    </c:choose>
+
+                                </c:forEach>
+                            </dd>
+                        </dl>
+                        <div class="page-link-content">
+                            <ul class="pagination pagination-sm">
+                                <c:forEach  varStatus="status" begin="${pageBean.beginPageIndex }"  end="${pageBean.endPageIndex}">
+                                    <c:if test="${status.index+pageBean.beginPageIndex-1 == pageBean.currentPage }">
+                                        <li><a href="javascript:void(0)" class="label label-info">${status.index+pageBean.beginPageIndex-1 }</a></li>
+                                    </c:if>
+                                    <c:if test="${status.index+pageBean.beginPageIndex-1 != pageBean.currentPage }">
+                                        <li><a href="javascript:void(0)" data-id="${status.index+pageBean.beginPageIndex-1 }">${status.index+pageBean.beginPageIndex-1 }</a></li>
+                                    </c:if>
+                                </c:forEach>
+                            </ul>
+                        </div>
+                    </div>
                     <div id="course-list">
                         <table class="table-striped table">
                             <thead>
@@ -136,10 +179,10 @@
                         <ul class="pagination pagination-sm">
                             <c:forEach  varStatus="status" begin="${pageBean.beginPageIndex }"  end="${pageBean.endPageIndex}">
                                 <c:if test="${status.index+pageBean.beginPageIndex-1 == pageBean.currentPage }">
-                                    <li><a disabled="disabled" href="javascript:void(0)">${status.index+pageBean.beginPageIndex-1 }</a></li>
+                                    <li><a href="javascript:void(0)" class="label label-info">${status.index+pageBean.beginPageIndex-1 }</a></li>
                                 </c:if>
                                 <c:if test="${status.index+pageBean.beginPageIndex-1 != pageBean.currentPage }">
-                                    <li><a href="admin/course-list/${status.index+pageBean.beginPageIndex-1 }" >${status.index+pageBean.beginPageIndex-1 }</a></li>
+                                    <li><a href="javascript:void(0)" data-id="${status.index+pageBean.beginPageIndex-1 }">${status.index+pageBean.beginPageIndex-1 }</a></li>
                                 </c:if>
                             </c:forEach>
                         </ul>
@@ -175,6 +218,7 @@
 <!-- Bootstrap JS -->
 <script type="text/javascript" src="resources/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="resources/js/all.js"></script>
+<script type="text/javascript" src="resources/js/course-list.js"></script>
 
 </body>
 </html>
