@@ -56,8 +56,8 @@ public interface PaperDao
 
   @Insert(""
           +" insert into "
-          +" paper (name,content,time,creator,paper_type_id) "
-          +" values (#{paper.name},#{paper.content},#{paper.time},#{paper.creator},#{paper.paperTypeId})"
+          +TABLE+"(name,content,time,creator,paper_type_id,question_ids) "
+          +" values (#{paper.name},#{paper.content},#{paper.time},#{paper.creator},#{paper.paperTypeId},#{paper.questionIds})"
   )
   @Options(useGeneratedKeys=true, keyProperty="paper.id")
    int addPaper(@Param("paper") Exampaper exampaper);

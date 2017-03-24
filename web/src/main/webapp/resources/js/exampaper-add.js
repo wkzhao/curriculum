@@ -92,7 +92,7 @@ exampaper_add = {
 		bindChangeCreatExamPaperType:function bindChangeCreatExamPaperType() {
 			
 			$(".add-update-exampaper-creat-type select").change(function(){
-				if (1 == $(this).val()) {
+				if (2 == $(this).val()) {
 					$(".add-update-types").hide();
 					$(".add-update-exampaper-scope").hide();
 					$(".add-total-point").hide();

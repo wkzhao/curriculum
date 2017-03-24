@@ -39,8 +39,8 @@ public class PracticeController
     {
         ModelAndView view = new ModelAndView("student/practice-incorrect");
         User user = (User)session.getAttribute("user");
-        List questionIds = userQuestionService.getErrorQuestionIds(user.getId(), pointId + "");
-        List questionList = questionService.getQuestionByIds(questionIds);
+        List<Integer> questionIds = userQuestionService.getErrorQuestionIds(user.getId(), pointId + "");
+        List<Question> questionList = questionService.getQuestionByIds(questionIds);
         view.addObject("questionList", questionList);
         view.addObject("amount", questionList.size());
         KnowledgePoint knowledgePoint = knowledgePointService.getPointById(pointId);

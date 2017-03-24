@@ -4,6 +4,7 @@ import com.curriculum.constant.Constants;
 import com.curriculum.constant.WebCodeEnum;
 import com.curriculum.domain.PageBean;
 import com.curriculum.domain.User;
+import com.curriculum.interceptor.annotation.LoginRequired;
 import com.curriculum.service.UserService;
 import com.curriculum.util.ReturnJacksonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@LoginRequired
 public class UserController
 {
 

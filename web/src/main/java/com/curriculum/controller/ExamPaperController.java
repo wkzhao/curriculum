@@ -8,6 +8,7 @@ import com.curriculum.domain.PageBean;
 import com.curriculum.domain.Question;
 import com.curriculum.domain.QuestionType;
 import com.curriculum.domain.User;
+import com.curriculum.interceptor.annotation.LoginRequired;
 import com.curriculum.service.impl.ExampaperServiceImpl;
 import com.curriculum.service.impl.KnowledgeServiceImpl;
 import com.curriculum.service.impl.QuestionServiceImpl;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@LoginRequired
 public class ExamPaperController
 {
 

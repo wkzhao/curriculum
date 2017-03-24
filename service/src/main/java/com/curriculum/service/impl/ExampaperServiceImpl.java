@@ -35,7 +35,7 @@ public class ExampaperServiceImpl
 
     public List<Exampaper>  getExamPaperByPage(int status, PageBean pageBean)
     {
-        List exampaperList = this.paperDao.getExamPaperByPage(status,pageBean);
+        List exampaperList = paperDao.getExamPaperByPage(status,pageBean);
         return exampaperList == null ? Collections.emptyList() : exampaperList;
     }
 
@@ -48,6 +48,7 @@ public class ExampaperServiceImpl
         List<Question> questionList = questionService.getQuestionByKnowledgePoints(knowledgePointIds);
         Map<Integer,List<Question>>  questionTypeMap = new HashMap<>();
         List<Question> partQuestionList = null;
+        StringBuilder stringBuilder = new StringBuilder(",");
         for(Question question :questionList){
             int questionTypeId = question.getQuestionTypeId();
             partQuestionList = questionTypeMap.get(questionTypeId);
@@ -79,6 +80,7 @@ public class ExampaperServiceImpl
                     Question question = questionListIterator.next();
                     if(question.getPoints().contains(","+result[i]+",")){
                         exampaperQuestions.add(question);
+                        stringBuilder.append(question.getId()+",");
                         questionListIterator.remove();
                         break;
                     }
@@ -86,6 +88,7 @@ public class ExampaperServiceImpl
             }
         }
         exampaper.setContent(ExampaperUtil.questionListToXml(exampaperQuestions));
+        exampaper.setQuestionIds(stringBuilder.toString());
         return exampaper;
     }
 
@@ -96,18 +99,18 @@ public class ExampaperServiceImpl
 
     public List<Exampaper> getSimplePapers()
     {
-        List exampaperList = this.paperDao.getSimplePapers();
+        List exampaperList = paperDao.getSimplePapers();
         return exampaperList == null ? Collections.emptyList() : exampaperList;
     }
 
     public int addPaper(Exampaper exampaper)
     {
-        return this.paperDao.addPaper(exampaper);
+        return paperDao.addPaper(exampaper);
     }
 
     public Exampaper getPaperById(int id)
     {
-        return this.paperDao.getPaperById(id);
+        return paperDao.getPaperById(id);
     }
 
     public int deletePaper(int id)
@@ -115,22 +118,22 @@ public class ExampaperServiceImpl
         if (getPaperById(id) == null) {
             return 0;
         }
-        return this.paperDao.deletePaper(id);
+        return paperDao.deletePaper(id);
     }
 
     public int changePaperStatus(int id, int status)
     {
-        return this.paperDao.changePaperStatus(id, status);
+        return paperDao.changePaperStatus(id, status);
     }
 
     public int changePaperContent(String content, int id)
     {
-        return this.paperDao.changePaperContent(content, id);
+        return paperDao.changePaperContent(content, id);
     }
 
     public int changePaperQuestionIds(String questionIds, int id)
     {
-        return this.paperDao.changePaperQuestionIds(questionIds, id);
+        return paperDao.changePaperQuestionIds(questionIds, id);
     }
 
     @Override

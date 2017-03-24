@@ -1,6 +1,7 @@
 package com.curriculum.controller;
 
 import com.curriculum.domain.Knowledge;
+import com.curriculum.interceptor.annotation.LoginRequired;
 import com.curriculum.service.impl.KnowledgePointServiceImpl;
 import com.curriculum.service.impl.KnowledgeServiceImpl;
 import com.curriculum.util.ReturnJacksonUtil;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@LoginRequired
 public class KnowledgeController
 {
 

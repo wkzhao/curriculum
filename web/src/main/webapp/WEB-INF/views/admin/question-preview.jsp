@@ -190,19 +190,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										</div>
 									</ul>
 									<div id="exampaper-footer" style="height: 187px;text-align:center;margin-top:40px;">
-										<c:choose>
-											<c:when test="${question.creator == sessionScope.user.username}">
-												<button class="btn btn-danger" id="delete-question-btn"><i class="fa fa-trash-o"></i> 删除该题</button>
-												<button class="btn btn-info" onclick="javascript:window.close();"><i class="fa fa-times"></i> 关闭页面</button>
-											</c:when>
-											<c:otherwise>
-												<button class="btn btn-danger" id="delete-question-btn" disabled="disabled" title="您只能删除你自己添加的题"><i class="fa fa-trash-o"></i> 删除该题</button>
-												<button class="btn btn-info" onclick="javascript:window.close();"><i class="fa fa-times"></i> 关闭页面</button>
-												<p>您只能删除你自己添加的题</p>
-											</c:otherwise>
-										</c:choose>
-										
-										
+										<button class="btn btn-info" onclick="javascript:window.close();"><i class="fa fa-times"></i> 关闭页面</button>
 									</div>
 								</div>
 								

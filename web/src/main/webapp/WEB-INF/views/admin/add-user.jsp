@@ -160,6 +160,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<script type="text/javascript" src="resources/js/jquery/jquery-1.9.0.min.js"></script>
 		<!-- Bootstrap JS -->
 		<script type="text/javascript" src="resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="resources/js/all.js"></script>
 		<script type="text/javascript" src="resources/js/md5.js"></script>
 		<script>
 		$(function() {
@@ -193,9 +194,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											data : JSON.stringify(data),
 											success : function(msg) {
 												if (msg.status.code == 0) {
-													document.location.href = document
-															.getElementsByTagName('base')[0].href
-															+ "admin/user-list";
+													util.success("添加管理员成功");
+													window.location.reload(true);
 												} else {
 													if (msg.status.code == 100003) {
 														$(

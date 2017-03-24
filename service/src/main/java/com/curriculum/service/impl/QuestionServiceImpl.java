@@ -24,12 +24,12 @@ public class QuestionServiceImpl
     public int addQuestion(Question question)
     {
         question.setContent(Object2Xml.toXml(question.getQuestionContent()));
-        return this.questionDao.addQuestion(question);
+        return questionDao.addQuestion(question);
     }
 
     public List<Question> getQuestionsByFilter(QuestionFilter questionFilter, PageBean pageBean)
     {
-        List<Question> questionList = this.questionDao.getQuestionsByFilter(questionFilter, pageBean);
+        List<Question> questionList = questionDao.getQuestionsByFilter(questionFilter, pageBean);
         setQuestionContent(questionList);
         for (Question question : questionList) {
             setPointsName(question);
@@ -48,7 +48,7 @@ public class QuestionServiceImpl
 
     public Question getQuestionById(int questionId)
     {
-        Question question = this.questionDao.getQuestionById(questionId);
+        Question question = questionDao.getQuestionById(questionId);
         question.setQuestionContent(Object2Xml.toBean(question.getContent(), QuestionContent.class));
         setPointsName(question);
         return question;
@@ -56,28 +56,31 @@ public class QuestionServiceImpl
 
     public int deleteQuestionById(int id)
     {
-        Question question = this.questionDao.getQuestionById(id);
+        Question question = questionDao.getQuestionById(id);
         if (question == null) {
             return 0;
         }
-        return this.questionDao.deleteQuestionById(id);
+        return questionDao.deleteQuestionById(id);
     }
 
     public List<Question> getQuestionByIds(List<Integer> ids)
     {
-        List questionList = this.questionDao.getQuestionByIds(ids);
+        if(ids == null || ids.size() == 0){
+            return Collections.emptyList();
+        }
+        List questionList = questionDao.getQuestionByIds(ids);
         setQuestionContent(questionList);
         return questionList == null ? Collections.emptyList() : questionList;
     }
 
     public String getQuestionAnswerById(int questionId)
     {
-        return this.questionDao.getQuestionAnswerById(questionId);
+        return questionDao.getQuestionAnswerById(questionId);
     }
 
     public int getQuestionCount()
     {
-        return this.questionDao.getQuestionCount();
+        return questionDao.getQuestionCount();
     }
 
     private List<Question> setQuestionContent(List<Question> questionList) {

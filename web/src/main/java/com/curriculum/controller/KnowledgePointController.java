@@ -3,6 +3,7 @@ package com.curriculum.controller;
 import com.curriculum.constant.Constants;
 import com.curriculum.domain.KnowledgePoint;
 import com.curriculum.domain.PageBean;
+import com.curriculum.interceptor.annotation.LoginRequired;
 import com.curriculum.service.impl.KnowledgePointServiceImpl;
 import com.curriculum.service.impl.KnowledgeServiceImpl;
 import com.curriculum.util.ReturnJacksonUtil;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@LoginRequired
 public class KnowledgePointController
 {
 

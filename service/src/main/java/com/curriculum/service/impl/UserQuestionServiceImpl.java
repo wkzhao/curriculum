@@ -37,7 +37,7 @@
        if (userQuestionList == null) {
          userQuestionList = new ArrayList();
        }
-       String answer = this.questionDao.getQuestionAnswerById(Integer.parseInt(questionId));
+       String answer = questionDao.getQuestionAnswerById(Integer.parseInt(questionId));
        String[] uAnswer = (questionIdAnswermap.get(questionId)).split("#");
        temp = new UserQuestion();
        temp.setUserId(userId);
@@ -51,12 +51,12 @@
        }
        userQuestionList.add(temp);
      }
-     return this.userQuestionDao.addUserQuestions(userQuestionList, null);
+     return userQuestionDao.addUserQuestions(userQuestionList, null);
    }
  
    public List<Integer> getErrorQuestionIds(int userId, String points)
    {
-     List questionsIds = this.userQuestionDao.getErrorQuestionIds(userId, points);
+     List questionsIds = userQuestionDao.getErrorQuestionIds(userId, points);
      return questionsIds == null ? Collections.emptyList() : questionsIds;
    }
  
@@ -66,9 +66,9 @@
      for (KnowledgePoint knowledgePoint : knowledgePointList) {
        Analysis analysis = new Analysis();
        analysis.setKnowledgePointName(knowledgePoint.getName());
-       analysis.setWrongTimes(this.userQuestionDao.getCountByPointId(knowledgePoint.getId() + "", userId, 0));
-       analysis.setRightTimes(this.userQuestionDao.getCountByPointId(knowledgePoint.getId() + "", userId, 1));
-       int totalNum = this.questionDao.getCountByPoints(knowledgePoint.getId() + "");
+       analysis.setWrongTimes(userQuestionDao.getCountByPointId(knowledgePoint.getId() + "", userId, 0));
+       analysis.setRightTimes(userQuestionDao.getCountByPointId(knowledgePoint.getId() + "", userId, 1));
+       int totalNum = questionDao.getCountByPoints(knowledgePoint.getId() + "");
        analysis.setTotalNums(totalNum);
        analysisList.add(analysis);
      }

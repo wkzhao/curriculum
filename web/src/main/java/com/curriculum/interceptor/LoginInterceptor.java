@@ -31,9 +31,11 @@ public class LoginInterceptor
             return false;
         }
         String uri = httpServletRequest.getRequestURI();
-        if ((uri.contains("admin/")) && (user.getRoleId() != 0)) {
-            httpServletRequest.getRequestDispatcher("/WEB-INF/views/no-privilege.jsp").forward(httpServletRequest, httpServletResponse);
-            return false;
+        if (uri.contains("admin/")) {
+            if(user.getRoleId() != 0 ){
+                httpServletRequest.getRequestDispatcher("/WEB-INF/views/no-privilege.jsp").forward(httpServletRequest, httpServletResponse);
+                return false;
+            }
         }
         return true;
     }
