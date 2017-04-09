@@ -7,6 +7,7 @@ public class Course
     private int id;
     private String title;
     private String content;
+    private String knowlwdgePointName;
     private int knowledgePointId;
     private String knowledgePointName;
     private String creator;
@@ -76,5 +77,13 @@ public class Course
 
     public void setVideoUrl(String videoUrl) {
         this.videoUrl = videoUrl;
+    }
+
+    public String getKnowlwdgePointName() {
+        return knowlwdgePointName;
+    }
+
+    public void setKnowlwdgePointName(String knowlwdgePointName) {
+        this.knowlwdgePointName = knowlwdgePointName;
     }
 }

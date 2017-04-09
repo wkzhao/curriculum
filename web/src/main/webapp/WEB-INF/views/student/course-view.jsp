@@ -97,9 +97,11 @@
                 </div>
                 <div class="page-content row">
                     <div>
-                        <video  width="544" height="360" controls>
-                            <source  src="${course.videoUrl}" type="video/mp4"></source>
-                        </video>
+                        <c:if test="${course.videoUrl != null}">
+                            <video  width="544" height="360" controls>
+                                <source  src="${course.videoUrl}" type="video/mp4"></source>
+                            </video>
+                        </c:if>
                     </div>
                     <form >
                         ${course.content}

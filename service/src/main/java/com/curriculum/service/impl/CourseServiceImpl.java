@@ -1,6 +1,5 @@
 package com.curriculum.service.impl;
 
-import com.curriculum.constant.KnowledgePointEnum;
 import com.curriculum.dao.CourseDao;
 import com.curriculum.domain.Course;
 import com.curriculum.domain.PageBean;
@@ -20,31 +19,24 @@ public class CourseServiceImpl
 
     public int addCourse(Course course)
     {
-        return this.courseDao.addCourse(course);
+        return courseDao.addCourse(course);
     }
 
     public List<Course> getCourseByPointId(int pointId, PageBean pageBean)
     {
-        List<Course> courseList = this.courseDao.getCourseByPointId(pointId, pageBean);
-        for (Course course : courseList) {
-            course.setKnowledgePointName(KnowledgePointEnum.getEnumById(course.getKnowledgePointId() + "").getTypeName());
-        }
+        List<Course> courseList = courseDao.getCourseByPointId(pointId, pageBean);
         return courseList == null ? Collections.emptyList() : courseList;
     }
 
     public int getCountByPointId(int pointId)
     {
-        return this.courseDao.getCountByPointId(pointId);
+        return courseDao.getCountByPointId(pointId);
     }
 
     public Course getCourseById(int id)
     {
-        Course course = this.courseDao.getCourseById(id);
-        if (course != null) {
-            course.setKnowledgePointName(KnowledgePointEnum.getEnumById(course.getKnowledgePointId() + "").getTypeName());
-            return course;
-        }
-        return null;
+        Course course = courseDao.getCourseById(id);
+        return course;
     }
 
     @Override

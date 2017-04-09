@@ -21,9 +21,10 @@ public interface CourseDao {
    int addCourse(@Param("course") Course course);
 
   @Select(""
-          +" select id,content,knowledge_point_id,title,creator,create_time,video_url  "
-          +" from  " +TABLE
-          +" where id = #{id} "
+          +" select course.id,content,knowledge_point.name as knowledge_point_name,knowledge_point_id,title,creator,course.create_time,video_url  "
+          +" from  " +TABLE+",knowledge_point "
+          +" where course.id = #{id} "
+          +" and knowledge_point_id = knowledge_point.id "
   )
    Course getCourseById(@Param("id") int id);
 
@@ -38,9 +39,10 @@ public interface CourseDao {
   int getCountByPointId(@Param("pointId") int pointId);
 
   @Select(" <script> "
-          +" select id,content,knowledge_point_id,title,create_time,creator,video_url " +
-          " from "+TABLE
-          +" <if test = 'pointId != 0'> where knowledge_point_id = #{pointId}  </if>  "
+          +" select course.id,content,knowledge_point_id,knowledge_point.name as knowledge_point_name,title,course.create_time,creator,video_url "
+          +" from "+TABLE+",knowledge_point "
+          +" where knowledge_point.id = knowledge_point_id "
+          +" <if test = 'pointId != 0'> and knowledge_point_id = #{pointId}  </if>  "
           +" limit #{pageBean.recordIndex},#{pageBean.pageSize} "
           +" </script> "
   )

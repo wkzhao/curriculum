@@ -1,7 +1,7 @@
 package com.curriculum.service.impl;
 
-import com.curriculum.constant.KnowledgePointEnum;
 import com.curriculum.dao.QuestionDao;
+import com.curriculum.domain.KnowledgePoint;
 import com.curriculum.domain.PageBean;
 import com.curriculum.domain.Question;
 import com.curriculum.domain.QuestionContent;
@@ -20,6 +20,9 @@ public class QuestionServiceImpl
 
     @Autowired
     QuestionDao questionDao;
+
+    @Autowired
+    KnowledgePointServiceImpl knowledgePointService;
 
     public int addQuestion(Question question)
     {
@@ -98,9 +101,9 @@ public class QuestionServiceImpl
         String pointsName = "";
 
         for (int i = 0; i < points.length; i++) {
-            KnowledgePointEnum knowledgePointEnum = KnowledgePointEnum.getEnumById(points[i]);
-            if (knowledgePointEnum != null) {
-                pointsName = pointsName + " " + knowledgePointEnum.getTypeName();
+            KnowledgePoint knowledgePoint = knowledgePointService.getPointById(Integer.parseInt(points[i]));
+            if (knowledgePoint != null) {
+                pointsName = pointsName + " " + knowledgePoint.getKnowledgeName();
             }
         }
         question.setPointsName(pointsName);
