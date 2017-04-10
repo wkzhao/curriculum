@@ -44,6 +44,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</style>
 	</head>
 	<body>
+	    <input type="hidden" class="question-list-flag" value="0">
 		<header>
 			<div class="container">
 				<div class="row">
@@ -118,6 +119,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</li>
 							<li>
 								<a href="admin/question-add"> <i class="fa fa-pencil-square-o"></i> 添加试题 </a>
+							</li>
+							<li>
+								<a href="admin/question-import"> <i class="fa fa-cloud-upload"></i> 导入试题 </a>
 							</li>
 						</ul>
 					</div>
@@ -220,7 +224,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 							</div>
 							<div id="question-list">
-								<input id="field-id-hidden" value="${fieldId }" type="hidden">
 								<input id="knowledge-hidden" value="${knowledge }" type="hidden">
 								<input id="question-type-hidden" value="${questionType }" type="hidden">
 								<input id="search-param-hidden" value="${searchParam }" type="hidden">

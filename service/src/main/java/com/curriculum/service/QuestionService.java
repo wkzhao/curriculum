@@ -21,4 +21,6 @@ public interface QuestionService {
    String getQuestionAnswerById(int id);
 
    int getQuestionCount();
+
+   int addQuestionList(List<Question> questionList);
 }

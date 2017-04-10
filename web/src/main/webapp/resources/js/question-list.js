@@ -44,7 +44,10 @@ var question_list = {
 		var knowledge = $("#question-filter-field dd .label").data("id");
 		var knowledgePoint = $("#question-filter-knowledge dd .label").data("id");
 		var questionType = $("#question-filter-qt dd .label").data("id");
-		var searchParam = 1;
+		var searchParam = $(".question-list-flag").val();
+		if( searchParam != 0 ){
+			searchParam = 1;
+		}
 		var page = 1;
 		
 		var data = new Object();

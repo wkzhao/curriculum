@@ -86,6 +86,17 @@ public class QuestionServiceImpl
         return questionDao.getQuestionCount();
     }
 
+    @Override
+    public int  addQuestionList(List<Question> questionList) {
+        if( questionList == null ){
+            return -1;
+        }
+        for( Question question :questionList){
+            question.setContent(Object2Xml.toXml(question.getQuestionContent()));
+        }
+        return questionDao.addQuestionList(questionList,null);
+    }
+
     private List<Question> setQuestionContent(List<Question> questionList) {
         for (Question question : questionList) {
             question.setQuestionContent(Object2Xml.toBean(question.getContent(), QuestionContent.class));
@@ -101,6 +112,9 @@ public class QuestionServiceImpl
         String pointsName = "";
 
         for (int i = 0; i < points.length; i++) {
+            if("".equals(points[i])){
+                continue;
+            }
             KnowledgePoint knowledgePoint = knowledgePointService.getPointById(Integer.parseInt(points[i]));
             if (knowledgePoint != null) {
                 pointsName = pointsName + " " + knowledgePoint.getKnowledgeName();

@@ -2,6 +2,7 @@ package com.curriculum.controller;
 
 import com.curriculum.constant.Constants;
 import com.curriculum.constant.WebCodeEnum;
+import com.curriculum.domain.Knowledge;
 import com.curriculum.domain.PageBean;
 import com.curriculum.domain.Question;
 import com.curriculum.domain.QuestionFilter;
@@ -11,13 +12,18 @@ import com.curriculum.service.impl.KnowledgePointServiceImpl;
 import com.curriculum.service.impl.KnowledgeServiceImpl;
 import com.curriculum.service.impl.QuestionServiceImpl;
 import com.curriculum.service.impl.QuestionTypeServiceImpl;
+import com.curriculum.util.POIReadExcelTool;
 import com.curriculum.util.ReturnJacksonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -70,9 +76,11 @@ public class QuestionController
     }
     @ResponseBody
     @RequestMapping(value={"admin/question-add"}, method = RequestMethod.POST)
-    public String addQuestion(@RequestBody Question question, HttpSession session) throws JsonProcessingException { question.setCreator(((User)session.getAttribute("user")).getUsername());
+    public String addQuestion(@RequestBody Question question, HttpSession session) throws JsonProcessingException {
+        question.setCreator(((User)session.getAttribute("user")).getUsername());
         questionService.addQuestion(question);
-        return ReturnJacksonUtil.resultOk(); }
+        return ReturnJacksonUtil.resultOk();
+    }
 
     @RequestMapping(value={"admin/question-preview/{questionId}"}, method = RequestMethod.GET)
     public ModelAndView toQuestionPreview(@PathVariable("questionId") int questionId) {
@@ -86,6 +94,28 @@ public class QuestionController
     public String deleteQuestion(@PathVariable("questionId") int questionId) throws JsonProcessingException { int num = questionService.deleteQuestionById(questionId);
         if (num != 1) {
             return ReturnJacksonUtil.resultWithFailed(WebCodeEnum.DELETE_QUESTION_ERROR);
+        }
+        return ReturnJacksonUtil.resultOk();
+    }
+
+    @RequestMapping(value = "admin/question-import",method = RequestMethod.GET)
+    public ModelAndView toQuestionImport(){
+        ModelAndView view = new ModelAndView("admin/question-import");
+        List<Knowledge> knowledgeList = knowledgeService.getAllKnowledge();
+        view.addObject("knowledgeList",knowledgeList);
+        return view;
+    }
+
+    @RequestMapping(value = "admin/question-import",method = RequestMethod.POST)
+    @ResponseBody
+    public String questionImport(@RequestParam("upload") MultipartFile file,HttpSession session) throws Exception {
+        List<Question> questionList = POIReadExcelTool.readXls(file.getInputStream());
+        for( Question question : questionList){
+            question.setCreator(((User) session.getAttribute("user")).getUsername());
+        }
+        int code = questionService.addQuestionList(questionList);
+        if(code == -1){
+           return ReturnJacksonUtil.resultWithFailed(WebCodeEnum.UNKNOWN_ERROR);
         }
         return ReturnJacksonUtil.resultOk();
     }

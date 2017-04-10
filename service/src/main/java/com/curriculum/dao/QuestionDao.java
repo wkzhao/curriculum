@@ -108,5 +108,14 @@ public interface QuestionDao
     )
     List<Question> getQuestionByKnowledgePoints(@Param("points") List<Integer> knowledgePointIds);
 
+    @Insert("<script> "
+            +" insert into question (name,answer,content,analysis,creator,points,question_type_id) "
+            +" values "
+            +" <foreach item='question' index='index' collection='questionList' separator=', ' > "
+            +" (#{question.name},#{question.answer},#{question.content},#{question.analysis},#{question.creator},#{question.points},#{question.questionTypeId}) "
+            +" </foreach> "
+            +" </script>"
+    )
+    int addQuestionList(@Param("questionList") List<Question> questionList, @Param("id") Integer paramInteger);
 }
 
