@@ -117,7 +117,7 @@ public class QuestionServiceImpl
             }
             KnowledgePoint knowledgePoint = knowledgePointService.getPointById(Integer.parseInt(points[i]));
             if (knowledgePoint != null) {
-                pointsName = pointsName + " " + knowledgePoint.getKnowledgeName();
+                pointsName = pointsName + " " + knowledgePoint.getName();
             }
         }
         question.setPointsName(pointsName);

@@ -121,7 +121,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<a href="start-exam"><i class="fa fa-edit"></i>试题练习</a>
 						</li>
 						<li class="active">
-							<a href="student/user-center"><i class="fa fa-dashboard"></i>会员中心</a>
+							<a href="student/user-center"><i class="fa fa-dashboard"></i>知识统计</a>
 						</li>
 						<li>
 							<a href="student/setting"><i class="fa fa-cogs"></i>个人设置</a>

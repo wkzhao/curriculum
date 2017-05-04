@@ -31,17 +31,17 @@ public class KnowledgePointServiceImpl
 
     public List<KnowledgePoint> getPointsByKnowledgeId(int knowledgeId)
     {
-        List knowledgePointList = this.knowledgePointDao.getPointsByKnowledgeId(Integer.valueOf(knowledgeId));
+        List knowledgePointList = knowledgePointDao.getPointsByKnowledgeId(Integer.valueOf(knowledgeId));
         return knowledgePointList == null ? Collections.emptyList() : knowledgePointList;
     }
 
     public KnowledgePoint getPointById(int pointId) {
-        return this.knowledgePointDao.getPointById(pointId);
+        return knowledgePointDao.getPointById(pointId);
     }
 
     public int addPoint(KnowledgePoint knowledgePoint)
     {
-        int num = this.knowledgePointDao.addPoint(knowledgePoint);
+        int num = knowledgePointDao.addPoint(knowledgePoint);
         return num;
     }
 

@@ -62,9 +62,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="container">
 				<nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
 					<ul class="nav navbar-nav">
-						<li>
-							<a href="#"><i class="fa fa-home"></i>网站首页</a>
-						</li>
+
 						<li class="active">
 							<a href="admin/question-list"><i class="fa fa-edit"></i>试题管理</a>
 						</li>
