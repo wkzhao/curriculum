@@ -4,8 +4,8 @@ import com.curriculum.constant.Constants;
 import com.curriculum.domain.KnowledgePoint;
 import com.curriculum.domain.PageBean;
 import com.curriculum.interceptor.annotation.LoginRequired;
-import com.curriculum.service.impl.KnowledgePointServiceImpl;
-import com.curriculum.service.impl.KnowledgeServiceImpl;
+import com.curriculum.service.KnowledgePointService;
+import com.curriculum.service.KnowledgeService;
 import com.curriculum.util.ReturnJacksonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.List;
@@ -21,10 +21,10 @@ public class KnowledgePointController
 {
 
     @Autowired
-    KnowledgePointServiceImpl knowledgePointService;
+    KnowledgePointService knowledgePointService;
 
     @Autowired
-    KnowledgeServiceImpl knowledgeService;
+    KnowledgeService knowledgeService;
 
     @RequestMapping(value={"admin/point-list-{knowledgeId}-{currentPage}"}, method = RequestMethod.GET)
     public ModelAndView toPointList(@PathVariable("knowledgeId") int knowledgeId,@PathVariable("currentPage") int currentPage)

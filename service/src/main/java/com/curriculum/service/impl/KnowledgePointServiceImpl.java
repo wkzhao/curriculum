@@ -35,6 +35,7 @@ public class KnowledgePointServiceImpl
         return knowledgePointList == null ? Collections.emptyList() : knowledgePointList;
     }
 
+    @Override
     public KnowledgePoint getPointById(int pointId) {
         return knowledgePointDao.getPointById(pointId);
     }

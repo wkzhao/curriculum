@@ -1,15 +1,14 @@
 package com.curriculum.controller;
 
-import com.curriculum.domain.Question;
+
 import com.curriculum.domain.User;
 import com.curriculum.domain.UserPaper;
 import com.curriculum.interceptor.annotation.LoginRequired;
-import com.curriculum.service.impl.KnowledgePointServiceImpl;
-import com.curriculum.service.impl.UserPaperServiceImpl;
-import com.curriculum.service.impl.UserQuestionServiceImpl;
-import com.curriculum.service.impl.UserServiceImpl;
+import com.curriculum.service.KnowledgePointService;
+import com.curriculum.service.UserPaperService;
+import com.curriculum.service.UserQuestionService;
+import com.curriculum.service.UserService;
 import com.curriculum.util.ExampaperUtil;
-import com.curriculum.util.Object2Xml;
 import com.curriculum.util.ReturnJacksonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -18,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -30,16 +28,16 @@ public class UserCenterController
 {
 
     @Autowired
-    KnowledgePointServiceImpl knowledgePointService;
+    KnowledgePointService knowledgePointService;
 
     @Autowired
-    UserQuestionServiceImpl userQuestionService;
+    UserQuestionService userQuestionService;
 
     @Autowired
-    UserPaperServiceImpl userPaperService;
+    UserPaperService userPaperService;
 
     @Autowired
-    UserServiceImpl userService;
+    UserService userService;
 
     @RequestMapping(value={"student/user-center"}, method = RequestMethod.GET)
     public ModelAndView toUserCenter()

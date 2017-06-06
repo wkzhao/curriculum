@@ -13,3 +13,7 @@
  *.dll  
  *.exe  
  *.jar
+ *.iml
+ *.mp4
+ *.rar
+ *.pdf

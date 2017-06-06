@@ -6,17 +6,15 @@ import com.curriculum.domain.KnowledgePoint;
 import com.curriculum.domain.PageBean;
 import com.curriculum.domain.User;
 import com.curriculum.interceptor.annotation.LoginRequired;
-import com.curriculum.service.impl.CourseServiceImpl;
-import com.curriculum.service.impl.KnowledgePointServiceImpl;
+import com.curriculum.service.CourseService;
+import com.curriculum.service.KnowledgePointService;
 import com.curriculum.util.ReturnJacksonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Writer;
 import java.util.List;
 import java.util.Locale;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -32,10 +30,10 @@ public class CourseController
 {
 
     @Autowired
-    CourseServiceImpl courseService;
+    CourseService courseService;
 
     @Autowired
-    KnowledgePointServiceImpl knowledgePointService;
+    KnowledgePointService knowledgePointService;
 
     @RequestMapping(value={"admin/course-list-{knowledgePointId}-{currentPage}"}, method = RequestMethod.GET)
     public ModelAndView getCourseList(@PathVariable("knowledgePointId") int knowledgePointId, @PathVariable("currentPage") int currentPage)

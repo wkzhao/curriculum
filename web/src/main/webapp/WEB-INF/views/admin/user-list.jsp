@@ -138,8 +138,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 													<fmt:formatDate value="${item.createTime }" pattern="yyyy-MM-dd"/>
 												</td>
 												<td>
-													<span class="enable-btn" data-id="${item.id}">做题统计</span>
-													<span class="disable-btn" data-id="${item.id}">考试历史</span>
+													<span class="enable-btn" data-id="${item.id}" data-url="${pageContext.request.contextPath}">做题统计</span>
+													<span class="disable-btn" data-id="${item.id}" data-url="${pageContext.request.contextPath}">考试历史</span>
 												</td>
 											</tr>
 										</c:forEach>
@@ -194,11 +194,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<script type="text/javascript">
 				$(".disable-btn").click(function(){
                     var userId = $(".enable-btn").data("id");
+                    var url =  $(".enable-btn").data("url");
                     var w = 800;
                     var h = 600;
                     var left = (screen.width/2)-(w/2);
                     var top = (screen.height/2)-(h/2);
-                    window.open("student/exam-history/"+userId+"?isAdmin=true", "学生考试历史",
+                    window.open(url+"student/exam-history/"+userId+"?isAdmin=true", "学生考试历史",
                         'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no,' +
                         ' resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
 					
@@ -206,11 +207,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				
 				$(".enable-btn").click(function(){
 				    var userId = $(".enable-btn").data("id");
+                    var url = $(".enable-btn").data("url");
                     var w = 800;
                     var h = 600;
                     var left = (screen.width/2)-(w/2);
                     var top = (screen.height/2)-(h/2);
-                    window.open("student/analysis/"+userId+"?isAdmin=true", "学生做题统计",
+                    window.open(url+"student/analysis/"+userId+"?isAdmin=true", "学生做题统计",
 						'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no,' +
 						' resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
 			});

@@ -11,6 +11,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <org.springframework.version>3.2.13.RELEASE</org.springframework.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <dependencies>
@@ -145,20 +147,6 @@
     </dependencies>
     <build>
         <plugins>
-            <!-- 使用1.6级别编译；代码为UTF-8编码；只编译指定的位置 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <verbose>true</verbose>
-                    <encoding>UTF-8</encoding>
-                    <compilerArguments>
-                        <sourcepath>${project.build.sourceDirectory}</sourcepath>
-                    </compilerArguments>
-                </configuration>
-            </plugin>
             <!-- package的时候，单独打出source包出来，deploy的时候能够一同提交到库中 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

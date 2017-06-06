@@ -3,6 +3,10 @@ package com.curriculum.controller;
 import com.curriculum.domain.Exampaper;
 import com.curriculum.domain.User;
 import com.curriculum.interceptor.annotation.LoginRequired;
+import com.curriculum.service.ExampaperService;
+import com.curriculum.service.KnowledgePointService;
+import com.curriculum.service.UserPaperService;
+import com.curriculum.service.UserQuestionService;
 import com.curriculum.service.impl.ExampaperServiceImpl;
 import com.curriculum.service.impl.KnowledgePointServiceImpl;
 import com.curriculum.service.impl.UserPaperServiceImpl;
@@ -25,16 +29,16 @@ public class ExamController
 {
 
     @Autowired
-    ExampaperServiceImpl exampaperService;
+    ExampaperService exampaperService;
 
     @Autowired
-    UserQuestionServiceImpl userQuestionService;
+    UserQuestionService userQuestionService;
 
     @Autowired
-    KnowledgePointServiceImpl knowledgePointService;
+    KnowledgePointService knowledgePointService;
 
     @Autowired
-    UserPaperServiceImpl userPaperService;
+    UserPaperService userPaperService;
 
     @RequestMapping(value={"start-exam"}, method = RequestMethod.GET)
     public ModelAndView startExam()

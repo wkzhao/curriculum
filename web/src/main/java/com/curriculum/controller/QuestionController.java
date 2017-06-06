@@ -8,16 +8,14 @@ import com.curriculum.domain.Question;
 import com.curriculum.domain.QuestionFilter;
 import com.curriculum.domain.User;
 import com.curriculum.interceptor.annotation.LoginRequired;
-import com.curriculum.service.impl.KnowledgePointServiceImpl;
-import com.curriculum.service.impl.KnowledgeServiceImpl;
-import com.curriculum.service.impl.QuestionServiceImpl;
-import com.curriculum.service.impl.QuestionTypeServiceImpl;
+import com.curriculum.service.KnowledgePointService;
+import com.curriculum.service.KnowledgeService;
+import com.curriculum.service.QuestionService;
+import com.curriculum.service.QuestionTypeService;
 import com.curriculum.util.POIReadExcelTool;
 import com.curriculum.util.ReturnJacksonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,16 +30,16 @@ public class QuestionController
 {
 
     @Autowired
-    QuestionServiceImpl questionService;
+    QuestionService questionService;
 
     @Autowired
-    KnowledgeServiceImpl knowledgeService;
+    KnowledgeService knowledgeService;
 
     @Autowired
-    KnowledgePointServiceImpl knowledgePointService;
+    KnowledgePointService knowledgePointService;
 
     @Autowired
-    QuestionTypeServiceImpl questionTypeService;
+    QuestionTypeService questionTypeService;
 
     @RequestMapping(value={"admin/question-list/{knowledgeId}-{knowledgePointId}-{questionType}-{searchParam}-{currentPage}"}, method = RequestMethod.GET)
     public ModelAndView toQuestionList(@PathVariable("knowledgeId") long knowledgeId, @PathVariable("knowledgePointId") String knowledgePointId, @PathVariable("questionType") long questionType, @PathVariable("searchParam") int searchParam, @PathVariable("currentPage") int currentPage)

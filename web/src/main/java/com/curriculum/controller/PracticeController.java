@@ -5,9 +5,9 @@ import com.curriculum.domain.Question;
 import com.curriculum.domain.QuestionFilter;
 import com.curriculum.domain.User;
 import com.curriculum.interceptor.annotation.LoginRequired;
-import com.curriculum.service.impl.KnowledgePointServiceImpl;
-import com.curriculum.service.impl.QuestionServiceImpl;
-import com.curriculum.service.impl.UserQuestionServiceImpl;
+import com.curriculum.service.KnowledgePointService;
+import com.curriculum.service.QuestionService;
+import com.curriculum.service.UserQuestionService;
 import com.curriculum.util.ReturnJacksonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.HashMap;
@@ -26,13 +26,13 @@ public class PracticeController
 {
 
     @Autowired
-    UserQuestionServiceImpl userQuestionService;
+    UserQuestionService userQuestionService;
 
     @Autowired
-    QuestionServiceImpl questionService;
+    QuestionService questionService;
 
     @Autowired
-    KnowledgePointServiceImpl knowledgePointService;
+    KnowledgePointService knowledgePointService;
 
     @RequestMapping(value={"student/practice-incorrect/{knowledgePointId}"}, method = RequestMethod.GET)
     public ModelAndView practiceIncorrect(HttpSession session, @PathVariable("knowledgePointId") int pointId)

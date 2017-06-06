@@ -2,8 +2,8 @@ package com.curriculum.controller;
 
 import com.curriculum.domain.Knowledge;
 import com.curriculum.interceptor.annotation.LoginRequired;
-import com.curriculum.service.impl.KnowledgePointServiceImpl;
-import com.curriculum.service.impl.KnowledgeServiceImpl;
+import com.curriculum.service.KnowledgePointService;
+import com.curriculum.service.KnowledgeService;
 import com.curriculum.util.ReturnJacksonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.List;
@@ -21,10 +21,10 @@ public class KnowledgeController
 {
 
     @Autowired
-    KnowledgeServiceImpl knowledgeService;
+    KnowledgeService knowledgeService;
 
     @Autowired
-    KnowledgePointServiceImpl knowledgePointService;
+    KnowledgePointService knowledgePointService;
 
     @RequestMapping(value={"admin/knowledge-list"}, method = RequestMethod.GET)
     public ModelAndView toKnowledgeList()

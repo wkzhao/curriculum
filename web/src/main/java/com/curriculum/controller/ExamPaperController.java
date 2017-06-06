@@ -9,14 +9,13 @@ import com.curriculum.domain.Question;
 import com.curriculum.domain.QuestionType;
 import com.curriculum.domain.User;
 import com.curriculum.interceptor.annotation.LoginRequired;
-import com.curriculum.service.impl.ExampaperServiceImpl;
-import com.curriculum.service.impl.KnowledgeServiceImpl;
-import com.curriculum.service.impl.QuestionServiceImpl;
-import com.curriculum.service.impl.QuestionTypeServiceImpl;
+import com.curriculum.service.ExampaperService;
+import com.curriculum.service.KnowledgeService;
+import com.curriculum.service.QuestionService;
+import com.curriculum.service.QuestionTypeService;
 import com.curriculum.util.ExampaperUtil;
 import com.curriculum.util.ReturnJacksonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import java.io.PrintStream;
 import java.util.*;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,16 +29,16 @@ public class ExamPaperController
 {
 
     @Autowired
-    ExampaperServiceImpl exampaperService;
+    ExampaperService exampaperService;
 
     @Autowired
-    QuestionServiceImpl questionService;
+    QuestionService questionService;
 
     @Autowired
-    KnowledgeServiceImpl knowledgeService;
+    KnowledgeService knowledgeService;
 
     @Autowired
-    QuestionTypeServiceImpl questionTypeService;
+    QuestionTypeService questionTypeService;
 
     @RequestMapping(value={"admin/exampaper-list-{paperStatus}-{currentPage}"}, method = RequestMethod.GET)
     public ModelAndView toPaperList(@PathVariable("paperStatus") int status,@PathVariable("currentPage") int currentPage)

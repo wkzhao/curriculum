@@ -15,4 +15,6 @@ public interface KnowledgePointService {
    int addPoint(KnowledgePoint knowledgePoint);
 
    int changeProperty(KnowledgePoint knowledgePoint);
+
+   KnowledgePoint getPointById(int pointId);
 }

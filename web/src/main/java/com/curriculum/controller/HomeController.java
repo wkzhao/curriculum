@@ -5,13 +5,12 @@ import com.curriculum.domain.User;
 import com.curriculum.interceptor.annotation.LoginRequired;
 import javax.servlet.http.HttpSession;
 
-import com.curriculum.service.impl.KnowledgePointServiceImpl;
+import com.curriculum.service.KnowledgePointService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class HomeController
 {
 
     @Autowired
-    KnowledgePointServiceImpl knowledgePointService;
+    KnowledgePointService knowledgePointService;
 
     @RequestMapping(value={"", "home"}, method = RequestMethod.GET)
     public ModelAndView toHome(HttpSession session)

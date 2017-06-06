@@ -92,7 +92,7 @@ public class QuestionServiceImpl
             return -1;
         }
         for( Question question :questionList){
-            question.setContent(Object2Xml.toXml(question.getQuestionContent()));
+           question.setContent(Object2Xml.toXml(question.getQuestionContent()));
         }
         return questionDao.addQuestionList(questionList,null);
     }
